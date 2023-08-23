@@ -1,0 +1,403 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <LangVersion>9.0</LangVersion>
+    <TargetFramework>net4.7.1</TargetFramework>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>embedded</DebugType>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="scripts">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\StreamingAssets\sole_assets\mods\ori\scripts\scripts.dll</HintPath>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="AndroidRuntimePermissions.Runtime">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\AndroidRuntimePermissions.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="DOTween">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="GameCore.Attributes">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.Attributes.dll</HintPath>
+    </Reference>
+    <Reference Include="GameCore.Converters">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.Converters.dll</HintPath>
+    </Reference>
+    <Reference Include="GameCore.InterfacesEnums">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.InterfacesEnums.dll</HintPath>
+    </Reference>
+    <Reference Include="GameCore.ModIDs">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.ModIDs.dll</HintPath>
+    </Reference>
+    <Reference Include="GameCore.Sundry">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.Sundry.dll</HintPath>
+    </Reference>
+    <Reference Include="GameCore.UI">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="kcp2k">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\kcp2k.dll</HintPath>
+    </Reference>
+    <Reference Include="Loom">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Loom.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Authenticators">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Mirror.Authenticators.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Components">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Mirror.Components.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Mirror.dll</HintPath>
+    </Reference>
+    <Reference Include="Mirror.Transports">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Mirror.Transports.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Security">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Mono.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="mscorlib">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\mscorlib.dll</HintPath>
+    </Reference>
+    <Reference Include="netstandard">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\netstandard.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="SPCSharpTools">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\SPCSharpTools.dll</HintPath>
+    </Reference>
+    <Reference Include="SPCSharpWindowsTools">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\SPCSharpWindowsTools.dll</HintPath>
+    </Reference>
+    <Reference Include="SPUnityTools">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\SPUnityTools.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.Composition">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.ComponentModel.Composition.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Data.DataSetExtensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.EnterpriseServices">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.EnterpriseServices.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.IO.Compression.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.IO.Compression.FileSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Net.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Runtime.Serialization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Security">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ServiceModel.Internals">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.ServiceModel.Internals.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Transactions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Xml.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.Xml.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="UniTask.Addressables">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UniTask.Addressables.dll</HintPath>
+    </Reference>
+    <Reference Include="UniTask">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UniTask.dll</HintPath>
+    </Reference>
+    <Reference Include="UniTask.DOTween">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UniTask.DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="UniTask.Linq">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UniTask.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="UniTask.TextMeshPro">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UniTask.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.Burst.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Unsafe">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.Burst.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InputSystem">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.InputSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.InputSystem.ForUI">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.InputSystem.ForUI.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Postprocessing.Runtime">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.Postprocessing.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipeline.Universal.ShaderLibrary">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.RenderPipeline.Universal.ShaderLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.Runtime">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.RenderPipelines.Core.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Core.ShaderLibrary">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.RenderPipelines.Core.ShaderLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Runtime">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Shaders">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.RenderPipelines.Universal.Shaders.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AccessibilityModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.AccessibilityModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AIModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.AIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AndroidJNIModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.AndroidJNIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AnimationModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ARModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.ARModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AssetBundleModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClothModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.ClothModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterInputModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.ClusterInputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ClusterRendererModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.ClusterRendererModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ContentLoadModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.ContentLoadModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CrashReportingModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.CrashReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DirectorModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.DirectorModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.DSPGraphModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.DSPGraphModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GameCenterModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.GameCenterModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GIModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.GIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.GridModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.GridModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HotReloadModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.HotReloadModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.IMGUIModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.InputModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.JSONSerializeModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.JSONSerializeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.LocalizationModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.LocalizationModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.NVIDIAModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.NVIDIAModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ParticleSystemModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.ParticleSystemModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PerformanceReportingModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.PerformanceReportingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Physics2DModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.Physics2DModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ProfilerModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.ProfilerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PropertiesModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.PropertiesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.RuntimeInitializeOnLoadManagerInitializerModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ScreenCaptureModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.ScreenCaptureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SharedInternalsModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.SharedInternalsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteMaskModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.SpriteMaskModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SpriteShapeModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.SpriteShapeModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.StreamingModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.StreamingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubstanceModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.SubstanceModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.SubsystemsModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.SubsystemsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.TerrainModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TerrainPhysicsModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.TerrainPhysicsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreFontEngineModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.TextCoreFontEngineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextCoreTextEngineModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.TextCoreTextEngineModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TextRenderingModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TilemapModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.TilemapModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TLSModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.TLSModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIElementsModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UIElementsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UIModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UIModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UmbraModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UmbraModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsCommonModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityAnalyticsCommonModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityAnalyticsModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityAnalyticsModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityConnectModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityConnectModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityCurlModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityCurlModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityTestProtocolModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityTestProtocolModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAssetBundleModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityWebRequestAssetBundleModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestAudioModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityWebRequestAudioModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityWebRequestModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestTextureModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityWebRequestTextureModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UnityWebRequestWWWModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.UnityWebRequestWWWModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VehiclesModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.VehiclesModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VFXModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.VFXModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VideoModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.VideoModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VirtualTexturingModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.VirtualTexturingModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VRModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.VRModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.WindModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.WindModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.XRModule">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\UnityEngine.XRModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
