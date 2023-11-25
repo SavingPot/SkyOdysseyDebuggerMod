@@ -37,7 +37,7 @@ namespace Debugger
             {
                 Core.InitAllUIs();
 
-                if (scene.name == SceneNames.gameScene)
+                if (scene.name == SceneNames.GameScene)
                 {
                     Core.InitGameStatusText();
                     Core.InitRandomUpdateIB();
@@ -103,14 +103,14 @@ namespace Debugger
                 if (Core.gameStatusText && Core.gameStatusText.gameObject.activeInHierarchy)
                     Core.gameStatusText.RefreshUI();
 
-                if (setCameraOrthographicSize && GScene.active.name == SceneNames.gameScene)
+                if (setCameraOrthographicSize && GScene.active.name == SceneNames.GameScene)
                 {
                     Tools.instance.mainCamera.orthographicSize = cameraEnableOrthographicSize;
                 }
             }
             else
             {
-                if (setCameraOrthographicSize && GScene.active.name == SceneNames.gameScene)
+                if (setCameraOrthographicSize && GScene.active.name == SceneNames.GameScene)
                 {
                     Tools.instance.mainCamera.orthographicSize = cameraDisableOrthographicSize;
                 }

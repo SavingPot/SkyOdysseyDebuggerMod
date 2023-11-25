@@ -16,11 +16,8 @@ d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Assembly-CSharp-firs
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Assembly-CSharp.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\DOTween.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.Attributes.dll
-d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.Converters.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.InterfacesEnums.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.ModIDs.dll
-d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.Sundry.dll
-d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.UI.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\ICSharpCode.SharpZipLib.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\kcp2k.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Loom.dll
@@ -149,11 +146,8 @@ d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\AndroidRuntimePermis
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Assembly-CSharp-firstpass.pdb
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Assembly-CSharp.pdb
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.Attributes.pdb
-d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.Converters.pdb
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.InterfacesEnums.pdb
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.ModIDs.pdb
-d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.Sundry.pdb
-d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.UI.pdb
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\kcp2k.pdb
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Loom.pdb
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Mirror.Authenticators.pdb
