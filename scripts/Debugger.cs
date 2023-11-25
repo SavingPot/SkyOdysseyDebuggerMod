@@ -370,7 +370,7 @@ namespace Debugger
         {
             detailedLogImage.SetSizeDelta(logWindowSize, logWindowSize);
             detailedLogImage.SetAPos(0, (-logPanel.sd.y / 2));
-            if (GScene.name == SceneNames.gameScene)
+            if (GScene.name == SceneNames.GameScene)
                 detailedLogImage.AddAPosY(-inputButtonsHeight * 2);
             detailedLogText.sd = detailedLogImage.sd;
         }
@@ -918,7 +918,7 @@ namespace Debugger
             };
         }
 
-        internal static StringBuilder logBuilder = new StringBuilder();
+        internal static StringBuilder logBuilder = new();
         public static void OnHandleLog(string logString, string stack, LogType type)
         {
             logBuilder.Clear();
@@ -954,12 +954,7 @@ namespace Debugger
             {
                 string origin = Environment.StackTrace;
 
-                string[] lines = origin.Split('\n'); // 按照换行符分割日志
-                string mainContent = String.Join("\n", lines[6..]); // 把数组中从第四个元素开始的子字符串连接起来
-                string result = Regex.Replace(mainContent, @"in ([a-zA-Z]:.+\.cs:\d+)", "in <color=#00FFFF>$1</color>", RegexOptions.Multiline);
-                result = Regex.Replace(result, @"[[0x][0-9a-f]{5}]", "", RegexOptions.Multiline);
-
-                logBuilder.Append(result);
+                logBuilder.Append(Tools.HighlightedStackTrace());
             }
             catch
             {

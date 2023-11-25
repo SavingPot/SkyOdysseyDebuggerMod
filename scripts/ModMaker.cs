@@ -15,7 +15,7 @@ using Newtonsoft.Json;
 
 namespace Debugger
 {
-    [CreateAfterSceneLoad(SceneNames.firstScene)]
+    [CreateAfterSceneLoad(SceneNames.MainMenu)]
     public class ModMaker : MonoBehaviour
     {
         static readonly string[] exceptedDlls = new string[]
@@ -120,7 +120,7 @@ namespace Debugger
         {
             Scene scene = GScene.active;
 
-            if (scene.name == SceneNames.mainScene)
+            if (scene.name == SceneNames.MainMenu)
             {
                 if (!iua)
                     return;

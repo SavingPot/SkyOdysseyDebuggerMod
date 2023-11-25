@@ -27,20 +27,11 @@
     <Reference Include="GameCore.Attributes">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.Attributes.dll</HintPath>
     </Reference>
-    <Reference Include="GameCore.Converters">
-      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.Converters.dll</HintPath>
-    </Reference>
     <Reference Include="GameCore.InterfacesEnums">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.InterfacesEnums.dll</HintPath>
     </Reference>
     <Reference Include="GameCore.ModIDs">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.ModIDs.dll</HintPath>
-    </Reference>
-    <Reference Include="GameCore.Sundry">
-      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.Sundry.dll</HintPath>
-    </Reference>
-    <Reference Include="GameCore.UI">
-      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.UI.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\ICSharpCode.SharpZipLib.dll</HintPath>
