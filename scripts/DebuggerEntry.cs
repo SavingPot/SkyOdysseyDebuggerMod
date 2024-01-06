@@ -13,7 +13,7 @@ namespace Debugger
     {
         public static bool setCameraOrthographicSize = true;
         public static float cameraEnableOrthographicSize = 20;
-        public static float cameraDisableOrthographicSize = 10;
+        public static float cameraDisableOrthographicSize = 11;
 
         public override void OnLoaded()
         {
@@ -21,10 +21,6 @@ namespace Debugger
 
             Performance.OutputComputerInfo();
 
-            InternalUIAdder.AfterRefreshModView += () =>
-            {
-                MethodAgent.CallUntil(() => GameObject.FindObjectOfType<ModMaker>(), () => MethodAgent.CallNextFrame(() => GameObject.FindObjectOfType<ModMaker>().AddChangeContentButton()));
-            };
             Core.InitAllUIs();
 
             //将加载调试器前的日志显示
@@ -59,10 +55,10 @@ namespace Debugger
             Tools.totalLogTexts.Clear();
             Application.logMessageReceivedThreaded += Core.OnHandleLog;
 
-            MethodAgent.AddUpdate(RefreshTexts);
-            MethodAgent.AddUpdate(Core.CheckSelectedObject);
-            MethodAgent.AddUpdate(Core.DebuggerCanvasActiveControl);
-            Entity.OnEntityGetNetworkId += Core.ShowEntityNetId;
+            MethodAgent.updates += RefreshTexts;
+            MethodAgent.updates += Core.CheckSelectedObject;
+            MethodAgent.updates += Core.DebuggerCanvasActiveControl;
+            EntityCenter.OnAddEntity += Core.ShowEntityNetId;
             Chunk.SetRenderersEnabled += (chunk, enabled) =>
             {
                 Core.chunk.SetLineRendererActivity(chunk, false);
@@ -73,13 +69,13 @@ namespace Debugger
 
 
             //处理按键
-            MethodAgent.AddUpdate(() =>
+            MethodAgent.updates+=() =>
             {
                 if (Keyboard.current.pauseKey.wasReleasedThisFrame)
                 {
                     Time.timeScale = Time.timeScale == 0 ? 1 : 0;
                 }
-            });
+            };
         }
 
         IEnumerator IESetUIsToFirst()

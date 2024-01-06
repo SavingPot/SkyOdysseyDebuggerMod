@@ -32,7 +32,7 @@ namespace Debugger
             lineRenderer = chunk.gameObject.AddComponent<LineRenderer>();
             lineRenderer.positionCount = 5;
             lineRenderer.sortingOrder = 10;
-            lineRenderer.SetPositions(new Vector3[5] { chunk.leftUpPoint, chunk.leftDownPoint, chunk.rightDownPoint, chunk.rightUpPoint, chunk.leftUpPoint });
+            lineRenderer.SetPositions(new Vector3[5] { new(chunk.left, chunk.up), new(chunk.left, chunk.down), new(chunk.right, chunk.down), new(chunk.right, chunk.up), new(chunk.left, chunk.up) });
             lineRenderer.SetMaterialToSpriteDefault();
             lineRenderer.SetWidth(width);
             lineRenderer.SetColor(color);
@@ -268,6 +268,9 @@ namespace Debugger
             buttonScrollView.gridLayoutGroup.spacing = new Vector2(0, 2.5f);
             buttonScrollView.viewportImage.color = new Color32(0, 0, 0, 1);
             buttonScrollView.scrollViewImage.color = new Color32(0, 0, 0, 0);
+
+            buttonScrollView.viewportImage.raycastTarget = false;
+            buttonScrollView.scrollViewImage.raycastTarget = false;
         }
 
         public static void InitRandomUpdateIB()
@@ -281,7 +284,7 @@ namespace Debugger
             randomUpdateIB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
             randomUpdateIB.SetAPos(0, -logPanel.sd.y / 2 - inputButtonsHeight / 2);
             randomUpdateIB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
-            randomUpdateIB.AddMethod(() =>
+            randomUpdateIB.OnClickBind(() =>
             {
                 if (GFiles.world != null)
                 {
@@ -307,7 +310,7 @@ namespace Debugger
             time24IB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
             time24IB.SetAPos(0, -logPanel.sd.y / 2 - (inputButtonsHeight / 2) * 3);
             time24IB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
-            time24IB.AddMethod(() =>
+            time24IB.OnClickBind(() =>
             {
                 if (GFiles.world != null)
                 {
@@ -388,7 +391,7 @@ namespace Debugger
             clearLogsButton.buttonText.sd = clearLogsButton.sd;
             clearLogsButton.SetAPos(clearLogsButton.sd.x / 2, 0);
             clearLogsButton.buttonText.text.SetFontSize(14);
-            clearLogsButton.AddMethod(() =>
+            clearLogsButton.OnClickBind(() =>
             {
                 normalLogCount = 0;
                 errorLogCount = 0;
@@ -435,7 +438,7 @@ namespace Debugger
             doActiveToggle.text.text.SetFontSize(14);
             doActiveToggle.text.text.alignment = TMPro.TextAlignmentOptions.Center;
 
-            doActiveToggle.AddMethod(v =>
+            doActiveToggle.OnValueChangeBind(v =>
             {
                 logPanel.canvasGroup.interactable = v;
             });
@@ -627,30 +630,14 @@ namespace Debugger
                     gameStatusSB.AppendLine($"时间: {GTime.time24Format} ({GTime.time}/{GTime.timeOneDay}) - 流速:{GTime.timeSpeed}");
                     gameStatusSB.AppendLine($"随机更新几率: {RandomUpdater.randomUpdateProbability}");
 
-                    if (Player.GetLocal(out Player p))
+                    if (Player.TryGetLocal(out Player p))
                     {
                         gameStatusSB.AppendLine($"玩家位置: {(Vector2)p.transform.position}");
                         gameStatusSB.AppendLine($"玩家速度: {p.rb.velocity}");
 
-                        if (p.correctedSyncVars)
-                        {
-                            gameStatusSB.AppendLine($"玩家血量: {p.health}");
+                        gameStatusSB.AppendLine($"玩家血量: {p.health}");
 
-                            gameStatusSB.AppendLine($"沙盒: {p.sandboxIndex}");
-
-                            if (GFiles.world != null)
-                            {
-                                if (p.TryGetSandbox(out Sandbox sandbox))
-                                {
-                                    gameStatusSB.AppendLine($"沙盒群系: {sandbox.biome}");
-                                    gameStatusSB.AppendLine($"沙盒大小: {sandbox.size}");
-                                }
-                            }
-                        }
-                        else
-                        {
-                            gameStatusSB.AppendLine("正在修正同步变量");
-                        }
+                        gameStatusSB.AppendLine($"区域序列: {p.regionIndex}");
                     }
                     if (GFiles.world != null)
                     {
@@ -703,7 +690,7 @@ namespace Debugger
                 button.buttonText.text.text = $"{mtd.DeclaringType.FullName}.{mtd.Name}";
                 button.buttonText.autoCompareText = false;
 
-                button.AddMethod(() => mtd.Invoke(null, null));
+                button.OnClickBind(() => mtd.Invoke(null, null));
 
                 buttonScrollView.AddChild(button);
             }
@@ -766,7 +753,7 @@ namespace Debugger
 
         public static void ShowEntitySandboxIndex(Entity entity, Vector2Int _) => MethodAgent.TryRun(() =>
         {
-            string textIdShouldBe = $"debugger:text.entity_sandbox_index_{entity.netId}";
+            string textIdShouldBe = $"debugger:text.entity_region_index_{entity.netId}";
 
             TextIdentity text = IdentityCenter.CompareTextIdentity(textIdShouldBe);
 
@@ -779,7 +766,7 @@ namespace Debugger
                 text.text.SetFontSize(12);
                 text.text.alignment = TMPro.TextAlignmentOptions.Top;
                 text.OnUpdate += o => o.rt.localScale = new Vector2(entity.transform.localScale.x.Sign(), 1);
-                text.AfterRefreshing += p => p.text.text = $"Sbi={entity.sandboxIndex}";
+                text.AfterRefreshing += p => p.text.text = $"区域={entity.regionIndex}";
             }
 
             text.RefreshUI();
@@ -787,43 +774,118 @@ namespace Debugger
         #endregion
 
         #region 日志展示
-        public static void AddLogShower(string textContent, LogType type)
+        public static class LogShowerPool
         {
-            InitAllUIs();
+            public static Queue<LogShower> queue = new();
+            public static int createIndex;
 
-            //确定 ID 后缀和日志的图标
-            string textureId = null;
-            string textAndImageIdFix = null;
-
-            switch (type)
+            public static LogShower Get(string textContent, LogType type)
             {
-                case LogType.Warning:
-                    textureId = "debugger:warning_log_icon";
-                    textAndImageIdFix = "warning" + warningLogCount;
-                    break;
+                LogShower shower;
 
-                case LogType.Error:
-                    textureId = "debugger:error_log_icon";
-                    textAndImageIdFix = "error" + errorLogCount;
-                    break;
+                //确定 ID 后缀和日志的图标
+                string textureId = type switch
+                {
+                    LogType.Warning => "debugger:warning_log_icon",
+                    LogType.Error => "debugger:error_log_icon",
+                    LogType.Exception => "debugger:exception_log_icon",
+                    _ => "debugger:normal_log_icon",
+                };
 
-                case LogType.Exception:
-                    textureId = "debugger:exception_log_icon";
-                    textAndImageIdFix = "exception" + exceptionLogCount;
-                    break;
+                if (queue.Count == 0)
+                {
+                    string textAndImageIdFix = type switch
+                    {
+                        LogType.Warning => "warning" + createIndex,
+                        LogType.Error => "error" + createIndex,
+                        LogType.Exception => "exception" + createIndex,
+                        _ => "normal" + createIndex,
+                    };
+                    createIndex++;
 
-                default:
-                    textureId = "debugger:normal_log_icon";
-                    textAndImageIdFix = "normal" + normalLogCount;
-                    break;
+                    //如果不是的话就直接创建物体
+                    ImageIdentity bg = GameUI.AddImage(UPC.upperLeft, "debugger:image.log_" + textAndImageIdFix, "ori:button_flat");
+                    TextIdentity text = GameUI.AddText(UPC.middle, "debugger:text.log_" + textAndImageIdFix, bg);
+                    ButtonIdentity button = GameUI.AddButton(UPC.upperLeft, "debugger:image.log_" + textAndImageIdFix, text, textureId);
+
+                    //设置颜色以增强层级
+                    bg.image.SetColorBrightness(0.7f);
+
+                    //日志会大量出现, 要优化性能
+                    bg.image.raycastTarget = false;
+                    text.text.raycastTarget = false;
+                    button.buttonText.text.raycastTarget = false;
+
+                    //设置按钮样式并绑定方法
+                    button.SetSizeDelta(90, 90);
+                    button.SetAPos(15, -15);
+                    button.rt.localScale = new Vector2(0.3f, 0.3f);
+                    button.OnClickBind(() =>
+                    {
+                        //将文本获取至剪贴板
+                        GUIUtility.systemCopyBuffer = text.text.text;
+
+                        //将详细日志文本的内容刷新
+                        if (detailedLogText)
+                        {
+                            detailedLogText.text.text = text.text.text;
+                            detailedLogText.text.pageToDisplay = 1;
+                        }
+                    });
+
+                    //关闭自动刷新
+                    text.autoCompareText = false;
+
+                    //更改字体样式   (margin 可以让文本不伸到 button 里面)
+                    text.text.SetFontSize(10);
+                    text.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
+                    text.text.overflowMode = TMPro.TextOverflowModes.Page;
+                    text.text.margin = new Vector2(27.5f, 0);
+
+                    //默认为第一个文本, 如果没重复过, 默认禁用文本
+                    button.buttonText.AfterRefreshing += t => t.text.text = 1.ToString();
+                    button.buttonText.gameObject.SetActive(false);
+
+                    //设置字体大小, 文本框大小, 颜色, 位置
+                    button.buttonText.text.SetFontSize(30);
+                    button.buttonText.SetSizeDelta(90, 40);
+                    button.buttonText.text.color = Color.green;
+                    button.buttonText.SetAPosY(-button.sd.y / 2 - button.buttonText.sd.y / 2);
+
+                    //设为 ScrollView 子物体后会被打乱, 因此要重新设置
+                    logScrollView.AddChild(bg);
+                    text.sd = logScrollView.gridLayoutGroup.cellSize;
+                    bg.rt.localScale = Vector3.one;
+
+                    //推入池中
+                    shower = new(bg, text, button);
+                    queue.Enqueue(shower);
+                }
+                else
+                {
+                    shower = queue.Peek();
+                }
+
+                //刷新文本
+                shower.text.text.text = textContent;
+
+                //刷新日志预览
+                if (logPreviewText)
+                {
+                    logPreviewText.text.text = textContent;
+                }
+
+                return shower;
             }
 
-
+        }
+        public static void AddLogShower(string textContent, LogType type)
+        {
             //检测前一个的内容是否和当前一样
-            if (logShowers.Count > 0 && logShowers[logShowers.Count - 1].text.text.text == textContent)
+            if (logShowers.Count > 0 && logShowers[^1].text.text.text == textContent)
             {
                 //如果是的话就直接添加数字 (节约性能)
-                LogShower lastShower = logShowers[logShowers.Count - 1];
+                LogShower lastShower = logShowers[^1];
 
                 //使文本数字加 1
                 lastShower.button.buttonText.AfterRefreshing += t => t.text.text = (lastShower.button.buttonText.text.text.ToInt() + 1).ToString();
@@ -834,70 +896,7 @@ namespace Debugger
             }
             else
             {
-                //如果不是的话就直接创建物体
-                ImageIdentity bg = GameUI.AddImage(UPC.upperLeft, "debugger:image.log_" + textAndImageIdFix, "ori:button_flat");
-                TextIdentity text = GameUI.AddText(UPC.middle, "debugger:text.log_" + textAndImageIdFix, bg);
-                ButtonIdentity button = GameUI.AddButton(UPC.upperLeft, "debugger:image.log_" + textAndImageIdFix, text, textureId);
-
-                //设置颜色以增强层级
-                bg.image.SetColorBrightness(0.7f);
-
-                //日志会大量出现, 要优化性能
-                bg.image.raycastTarget = false;
-                text.text.raycastTarget = false;
-                button.buttonText.text.raycastTarget = false;
-
-                //设置按钮样式并绑定方法
-                button.SetSizeDelta(90, 90);
-                button.SetAPos(15, -15);
-                button.rt.localScale = new Vector2(0.3f, 0.3f);
-                button.AddMethod(() =>
-                {
-                    //将文本获取至剪贴板
-                    GUIUtility.systemCopyBuffer = text.text.text;
-
-                    //将详细日志文本的内容刷新
-                    if (detailedLogText)
-                    {
-                        detailedLogText.text.text = text.text.text;
-                        detailedLogText.text.pageToDisplay = 1;
-                    }
-                });
-
-                //使文本变为 textContent
-                text.autoCompareText = false;
-                text.text.text = textContent;
-
-                //更改字体样式   (margin 可以让文本不伸到 button 里面)
-                text.text.SetFontSize(10);
-                text.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
-                text.text.overflowMode = TMPro.TextOverflowModes.Page;
-                text.text.margin = new Vector2(27.5f, 0);
-
-                //刷新日志预览
-                if (logPreviewText)
-                {
-                    logPreviewText.text.text = textContent;
-                }
-
-
-                //默认为第一个文本, 如果没重复过, 默认禁用文本
-                button.buttonText.AfterRefreshing += t => t.text.text = 1.ToString();
-                button.buttonText.gameObject.SetActive(false);
-
-                //设置字体大小, 文本框大小, 颜色, 位置
-                button.buttonText.text.SetFontSize(30);
-                button.buttonText.SetSizeDelta(90, 40);
-                button.buttonText.text.color = Color.green;
-                button.buttonText.SetAPosY(-button.sd.y / 2 - button.buttonText.sd.y / 2);
-
-                //完成添加
-                logShowers.Add(new LogShower(bg, text, button));
-                logScrollView.AddChild(bg);
-
-                //设为 ScrollView 子物体后会被打乱, 因此要重新设置
-                text.sd = logScrollView.gridLayoutGroup.cellSize;
-                bg.rt.localScale = Vector3.one;
+                logShowers.Add(LogShowerPool.Get(textContent, type));
             }
 
             //添加日志数量

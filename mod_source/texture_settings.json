@@ -1,1 +1,21 @@
-{"json_format":"0.6.4","ori:textures":[]}
+{
+    "json_format": "0.4.6",
+    "textures": [
+        {
+            "id": "debugger:normal_log_icon",
+            "path": "/log/normal_log_icon.png"
+        },
+        {
+            "id": "debugger:warning_log_icon",
+            "path": "/log/warning_log_icon.png"
+        },
+        {
+            "id": "debugger:exception_log_icon",
+            "path": "/log/exception_log_icon.png"
+        },
+        {
+            "id": "debugger:error_log_icon",
+            "path": "/log/error_log_icon.png"
+        }
+    ]
+}
