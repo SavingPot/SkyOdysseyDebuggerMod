@@ -15,7 +15,6 @@ d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\0Harmony.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Assembly-CSharp-firstpass.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Assembly-CSharp.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\DOTween.dll
-d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.Attributes.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.InterfacesEnums.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\GameCore.ModIDs.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\ICSharpCode.SharpZipLib.dll
@@ -31,7 +30,6 @@ d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\netstandard.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Newtonsoft.Json.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\SPCSharpTools.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\SPCSharpWindowsTools.dll
-d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\SPUnityTools.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\System.ComponentModel.Composition.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\System.Configuration.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\System.Core.dll
@@ -142,3 +140,6 @@ d:\MakeGames\ModProject\Debugger\scripts\obj\Debug\net4.7.1\scripts.csproj.CoreC
 d:\MakeGames\ModProject\Debugger\scripts\obj\Debug\net4.7.1\scripts.csproj.CopyComplete
 d:\MakeGames\ModProject\Debugger\scripts\obj\Debug\net4.7.1\scripts.dll
 d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\AndroidRuntimePermissions.Runtime.dll
+d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\BouncyCastle.Cryptography.dll
+d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\SP.Tools.Unity.dll
+d:\MakeGames\ModProject\Debugger\scripts\bin\Debug\net4.7.1\Unity.RenderPipelines.Universal.Config.Runtime.dll

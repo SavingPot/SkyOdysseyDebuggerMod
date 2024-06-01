@@ -26,7 +26,7 @@
             },
             {
                 "id": "debugger:mod_description",
-                "text": "这个模组是官方做的, 可以实时查看游戏的日志信息, 也可以很方便的查看一些数据, 还可以用它来开发简单(无脚本)的模组, 是模组开发者的不二之选~"
+                "text": "这个模组由官方开发, 可以实时查看游戏的日志信息, 也可以很方便的查看一些数据, 还可以用它来开发简单(无脚本)的模组, 是模组开发者的不二之选~"
             },
             {
                 "id": "debugger:ib.random_update.inputField",
@@ -37,7 +37,7 @@
                 "text": "设置"
             },
             {
-                "id": "debugger:ib.time24",
+                "id": "debugger:ib.time24.inputField",
                 "text": "输入时间 (24制)..."
             },
             {
@@ -45,7 +45,7 @@
                 "text": "设置"
             },
             {
-                "id": "debugger:toggle.do_active.text",
+                "id": "debugger:toggle.activate_ui.text",
                 "text": "启用 UI"
             }
         ]

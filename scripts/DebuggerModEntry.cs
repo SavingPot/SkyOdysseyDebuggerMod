@@ -19,15 +19,16 @@ namespace Debugger
         {
             base.OnLoaded();
 
-            Performance.OutputComputerInfo();
-
-            Core.InitAllUIs();
+            //初始化日志面板
+            Core.InitLogPanel();
 
             //将加载调试器前的日志显示
             foreach (var item in GInit.totalLogTexts)
             {
                 Core.AddLogShower(item.Item1, item.Item2);
             }
+
+            Performance.OutputComputerInfo();
 
             //将日志代理到 Debugger
             //// GInit.writeLogsToFile = false;
@@ -36,17 +37,16 @@ namespace Debugger
 
             GScene.AfterChanged += scene =>
             {
-                Core.InitAllUIs();
+                Core.RefreshFastButtons();
 
                 if (scene.name == SceneNames.GameScene)
                 {
-                    Core.InitRandomUpdateIB();
-                    Core.InitTime24IB();
+                    Core.InitPanelForGameScene();
                 }
                 else
                 {
-                    GameObject.Destroy(Core.randomUpdateIB.gameObject);
-                    GameObject.Destroy(Core.time24IB.gameObject);
+                    Core.DestroyPanelForGameScene();
+                    Core.EntityCanvasPool.stack.Clear();
                 }
 
                 Core.SetUIsToFirst();
@@ -56,6 +56,7 @@ namespace Debugger
             MethodAgent.updates += Core.CheckSelectedObject;
             MethodAgent.updates += Core.DebuggerCanvasActiveControl;
             EntityCenter.OnAddEntity += Core.ShowEntityNetId;
+            EntityCenter.OnRemoveEntity += Core.RecoverEntityCanvasFrom;
             Chunk.SetRenderersEnabled += (chunk, enabled) =>
             {
                 Core.chunk.SetLineRendererActivity(chunk, false);
@@ -66,7 +67,7 @@ namespace Debugger
 
 
             //处理按键
-            MethodAgent.updates+=() =>
+            MethodAgent.updates += () =>
             {
                 if (Keyboard.current.pauseKey.wasReleasedThisFrame)
                 {
