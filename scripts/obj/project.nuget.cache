@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "gCAEu5CfJOAScxI+6tfzWLzhfDjJfSNBSfytZFeiohCjBnZupoLdOhMSdo/k2Zr73JLY7KxkmJjMVkvWkuXwNw==",
+  "dgSpecHash": "vWr2t+hLZZM/YKXP2iIUwHwS92LrEgrk3Vy4CUlLqQPUy6OdD7ZAvk5wnFykIXrb86myTNU4MZG+6Deb3ZiSQA==",
   "success": true,
-  "projectFilePath": "d:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj",
+  "projectFilePath": "D:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

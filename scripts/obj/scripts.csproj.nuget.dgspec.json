@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj": {}
+    "D:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj": {}
   },
   "projects": {
-    "d:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj": {
+    "D:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj",
+        "projectUniqueName": "D:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj",
         "projectName": "scripts",
-        "projectPath": "d:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj",
+        "projectPath": "D:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj",
         "packagesPath": "C:\\Users\\SavingPotStudio\\.nuget\\packages\\",
-        "outputPath": "d:\\MakeGames\\ModProject\\Debugger\\scripts\\obj\\",
+        "outputPath": "D:\\MakeGames\\ModProject\\Debugger\\scripts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\SavingPotStudio\\AppData\\Roaming\\NuGet\\NuGet.Config"

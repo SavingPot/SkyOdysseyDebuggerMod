@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 
 namespace Debugger
 {
-    public class CoreEntry : ModEntry
+    public class DebuggerModEntry : ModEntry
     {
         public static bool setCameraOrthographicSize = true;
         public static float cameraEnableOrthographicSize = 20;
@@ -24,36 +24,33 @@ namespace Debugger
             Core.InitAllUIs();
 
             //将加载调试器前的日志显示
-            for (int i = 0; i < Tools.totalLogTexts.Count; i++)
+            foreach (var item in GInit.totalLogTexts)
             {
-                var ele = Tools.totalLogTexts.ElementAt(i);
-                Core.AddLogShower(ele.Key, ele.Value);
+                Core.AddLogShower(item.Item1, item.Item2);
             }
+
+            //将日志代理到 Debugger
+            //// GInit.writeLogsToFile = false;
+            //// GInit.totalLogTexts.Clear();
+            Application.logMessageReceivedThreaded += Core.OnHandleLog;
+
             GScene.AfterChanged += scene =>
             {
                 Core.InitAllUIs();
 
                 if (scene.name == SceneNames.GameScene)
                 {
-                    Core.InitGameStatusText();
                     Core.InitRandomUpdateIB();
                     Core.InitTime24IB();
                 }
                 else
                 {
-                    GameObject.Destroy(Core.gameStatusText.gameObject);
                     GameObject.Destroy(Core.randomUpdateIB.gameObject);
                     GameObject.Destroy(Core.time24IB.gameObject);
                 }
 
-                Core.SetDetailedLogPos();
                 Core.SetUIsToFirst();
             };
-
-            //将日志代理到 Debugger
-            Tools.writeLogsToFile = false;
-            Tools.totalLogTexts.Clear();
-            Application.logMessageReceivedThreaded += Core.OnHandleLog;
 
             MethodAgent.updates += RefreshTexts;
             MethodAgent.updates += Core.CheckSelectedObject;

@@ -21,11 +21,11 @@
     <Reference Include="Assembly-CSharp">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
+    <Reference Include="BouncyCastle.Cryptography">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\BouncyCastle.Cryptography.dll</HintPath>
+    </Reference>
     <Reference Include="DOTween">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\DOTween.dll</HintPath>
-    </Reference>
-    <Reference Include="GameCore.Attributes">
-      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.Attributes.dll</HintPath>
     </Reference>
     <Reference Include="GameCore.InterfacesEnums">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\GameCore.InterfacesEnums.dll</HintPath>
@@ -66,14 +66,14 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="SP.Tools.Unity">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\SP.Tools.Unity.dll</HintPath>
+    </Reference>
     <Reference Include="SPCSharpTools">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\SPCSharpTools.dll</HintPath>
     </Reference>
     <Reference Include="SPCSharpWindowsTools">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\SPCSharpWindowsTools.dll</HintPath>
-    </Reference>
-    <Reference Include="SPUnityTools">
-      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\SPUnityTools.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.Composition">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\System.ComponentModel.Composition.dll</HintPath>
@@ -173,6 +173,9 @@
     </Reference>
     <Reference Include="Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.RenderPipelines.ShaderGraph.ShaderGraphLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.RenderPipelines.Universal.Config.Runtime">
+      <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.RenderPipelines.Universal.Config.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="Unity.RenderPipelines.Universal.Runtime">
       <HintPath>D:\MakeGames\GameProject\SandboxWorld\GameLauncher\Windows\Latest\SkyOdyssey_Data\Managed\Unity.RenderPipelines.Universal.Runtime.dll</HintPath>

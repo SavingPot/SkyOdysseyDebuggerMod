@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -111,7 +112,7 @@ namespace Debugger
         public static bool enabled = true;
         public static int inputButtonsHeight = 30;
 
-        public static List<LogShower> logShowers = new();
+        public static readonly List<LogShower> logShowers = new();
         public static ImageIdentity detailedLogImage;
         public static TextIdentity detailedLogText;
         public static PanelIdentity logToolsPanel;
@@ -214,7 +215,8 @@ namespace Debugger
         }
 
         #region 初始化UI
-        public const int logWindowSize = 400;
+        public static readonly Vector2 logWindowSize = new(400, 400);
+        public static readonly Vector2 detailedLogSize = new(800, 180);
 
         public static void InitLogPanel()
         {
@@ -223,7 +225,7 @@ namespace Debugger
 
             logPanel = GameUI.AddPanel("debugger:panel.log_show", GetMainCanvas().transform);
             logPanel.SetAnchorMinMax(0, 1);
-            logPanel.SetSizeDelta(logWindowSize, logWindowSize);
+            logPanel.sd = logWindowSize;
             logPanel.panelImage.SetAlpha(0.5f);
 
             SetLogPanelTransform();
@@ -245,10 +247,10 @@ namespace Debugger
 
             InitLogPanel();
 
-            logScrollView = GameUI.AddScrollView(UPC.upperLeft, "debugger:scrollview_log_show", logPanel);
+            logScrollView = GameUI.AddScrollView(UIA.UpperLeft, "debugger:scrollview_log_show", logPanel);
             logScrollView.SetSizeDelta(logPanel.sd.x, logPanel.sd.y - logToolsHeight);
             logScrollView.SetAPos(logScrollView.sd.x / 2, -logScrollView.sd.y / 2 - logToolsHeight);
-            logScrollView.gridLayoutGroup.cellSize = new Vector2(logScrollView.gridLayoutGroup.cellSize.x, 45);
+            logScrollView.gridLayoutGroup.cellSize = new Vector2(logScrollView.gridLayoutGroup.cellSize.x, 35);
             logScrollView.gridLayoutGroup.spacing = new Vector2(0, 2.5f);
             logScrollView.viewportImage.color = new Color32(0, 0, 0, 1);
             logScrollView.scrollViewImage.color = new Color32(0, 0, 0, 0);
@@ -261,7 +263,7 @@ namespace Debugger
 
             InitLogPanel();
 
-            buttonScrollView = GameUI.AddScrollView(UPC.upperLeft, "debugger:scrollview_button_show", logPanel);
+            buttonScrollView = GameUI.AddScrollView(UIA.UpperLeft, "debugger:scrollview_button_show", logPanel);
             buttonScrollView.SetSizeDelta(logPanel.sd.x, logPanel.sd.y);
             buttonScrollView.SetAPosOnBySizeRight(logScrollView, 0);
             buttonScrollView.gridLayoutGroup.cellSize = new Vector2(buttonScrollView.gridLayoutGroup.cellSize.x, 45);
@@ -280,7 +282,7 @@ namespace Debugger
 
             InitLogPanel();
 
-            randomUpdateIB = GameUI.AddInputButton(UPC.middle, "debugger:ib.random_update", logPanel);
+            randomUpdateIB = GameUI.AddInputButton(UIA.Middle, "debugger:ib.random_update", logPanel);
             randomUpdateIB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
             randomUpdateIB.SetAPos(0, -logPanel.sd.y / 2 - inputButtonsHeight / 2);
             randomUpdateIB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
@@ -306,7 +308,7 @@ namespace Debugger
 
             InitLogPanel();
 
-            time24IB = GameUI.AddInputButton(UPC.middle, "debugger:ib.time24", logPanel);
+            time24IB = GameUI.AddInputButton(UIA.Middle, "debugger:ib.time24", logPanel);
             time24IB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
             time24IB.SetAPos(0, -logPanel.sd.y / 2 - (inputButtonsHeight / 2) * 3);
             time24IB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
@@ -329,7 +331,7 @@ namespace Debugger
             logToolsPanel = GameUI.AddPanel("debugger:panel.log_tools", logPanel);
             logToolsPanel.panelImage.SetColor(0.75f, 0.75f, 0.75f, 0.75f);
             logToolsPanel.SetAPos(logPanel.sd.x / 2, -logToolsHeight / 2);
-            logToolsPanel.SetSizeDelta(logWindowSize, logToolsHeight);
+            logToolsPanel.SetSizeDelta(logWindowSize.x, logToolsHeight);
             logToolsPanel.SetAnchorMinMax(0, 1);
         }
 
@@ -341,41 +343,36 @@ namespace Debugger
             InitLogToolsPanel();
             InitLogPreviewText();
 
-            detailedLogImage = GameUI.AddImage(UPC.down, "debugger:image.log_detailed", "ori:square_button_flat", logPanel);
-            detailedLogImage.image.SetColor(0.6f, 0.6f, 0.6f, 1);
+            detailedLogImage = GameUI.AddImage(UIA.UpperRight, "debugger:image.log_detailed", "ori:square_button_flat", logPanel);
+            detailedLogImage.image.SetColor(0.7f, 0.7f, 0.7f, 1);
             detailedLogImage.image.raycastTarget = false;
+            detailedLogImage.sd = detailedLogSize;
+            detailedLogImage.SetAPos(detailedLogSize.x / 2, -detailedLogSize.y / 2);
 
-            detailedLogText = GameUI.AddText(UPC.middle, "debugger:text.log_detailed", detailedLogImage);
+            detailedLogText = GameUI.AddText(UIA.Up, "debugger:text.log_detailed", detailedLogImage);
             detailedLogText.text.SetFontSize(11);
             detailedLogText.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
             detailedLogText.text.overflowMode = TMPro.TextOverflowModes.Page;
-            detailedLogText.text.margin = new Vector4(30, 30, 30, 30);
+            detailedLogText.text.margin = new Vector4(30, 10, 10, 0);
             detailedLogText.text.raycastTarget = false;
             detailedLogText.autoCompareText = false;
-            detailedLogText.sd = new(detailedLogImage.sd.x, 800);
+            detailedLogText.SetSizeDelta(detailedLogSize.x, detailedLogSize.y * 10);
+            SetDetailedLogTextPosition(0);
 
-            SetDetailedLogPos();
 
 
             detailedLogImage.gameObject.AddComponent<RectMask2D>();
-            var slider = GameUI.AddSlider(UPC.left, "debugger:slider.log_detailed", detailedLogImage);
+            var slider = GameUI.AddSlider(UIA.Left, "debugger:slider.log_detailed", detailedLogImage);
             slider.slider.value = 0;
             slider.slider.transform.localRotation = Quaternion.Euler(0, 0, -90);
             GameObject.Destroy(slider.text.gameObject);
             slider.SetAPosX(slider.sd.y / 2);
-            slider.slider.onValueChanged.AddListener(value =>
-            {
-                detailedLogText.SetAPosY(0 + detailedLogText.sd.y * value - (detailedLogText.sd.y - detailedLogImage.sd.y) / 2);
-            });
+            slider.slider.onValueChanged.AddListener(SetDetailedLogTextPosition);
         }
 
-        public static void SetDetailedLogPos()
+        public static void SetDetailedLogTextPosition(float value)
         {
-            detailedLogImage.SetSizeDelta(logWindowSize, logWindowSize);
-            detailedLogImage.SetAPos(0, (-logPanel.sd.y / 2));
-            if (GScene.name == SceneNames.GameScene)
-                detailedLogImage.AddAPosY(-inputButtonsHeight * 2);
-            detailedLogText.sd = detailedLogImage.sd;
+            detailedLogText.SetAPosY(-detailedLogText.sd.y / 2 + detailedLogText.sd.y * value);
         }
 
         public static void InitClearLogsButton()
@@ -386,7 +383,7 @@ namespace Debugger
             InitLogScrollView();
             InitLogToolsPanel();
 
-            clearLogsButton = GameUI.AddButton(UPC.left, "debugger:button.clear_logs", logToolsPanel);
+            clearLogsButton = GameUI.AddButton(UIA.Left, "debugger:button.clear_logs", logToolsPanel);
             clearLogsButton.SetSizeDelta(70, logToolsHeight);
             clearLogsButton.buttonText.sd = clearLogsButton.sd;
             clearLogsButton.SetAPos(clearLogsButton.sd.x / 2, 0);
@@ -397,7 +394,12 @@ namespace Debugger
                 errorLogCount = 0;
                 exceptionLogCount = 0;
                 warningLogCount = 0;
-                logScrollView.Clear();
+
+                foreach (var item in logShowers)
+                {
+                    LogShowerPool.Recover(item);
+                }
+
                 logShowers.Clear();
             });
         }
@@ -410,7 +412,7 @@ namespace Debugger
             InitLogScrollView();
             InitLogToolsPanel();
 
-            mostDownLogsToggle = GameUI.AddToggle(UPC.left, "debugger:toggle.most_down_logs", logToolsPanel);
+            mostDownLogsToggle = GameUI.AddToggle(UIA.Left, "debugger:toggle.most_down_logs", logToolsPanel);
             mostDownLogsToggle.SetScale(new Vector2(90, logToolsHeight));
             mostDownLogsToggle.text.text.SetFontSize(14);
             mostDownLogsToggle.SetAPosOnBySizeRight(clearLogsButton, 5);
@@ -431,7 +433,7 @@ namespace Debugger
 
             InitMostDownLogsButton();
 
-            doActiveToggle = GameUI.AddToggle(UPC.left, "debugger:toggle.do_active", logToolsPanel);
+            doActiveToggle = GameUI.AddToggle(UIA.Left, "debugger:toggle.do_active", logToolsPanel);
             doActiveToggle.SetScale(new Vector2(90, logToolsHeight));
             doActiveToggle.canvasGroup.ignoreParentGroups = true;
             doActiveToggle.SetAPosOnBySizeRight(mostDownLogsToggle, 5);
@@ -453,7 +455,7 @@ namespace Debugger
 
             InitLogToolsPanel();
 
-            logPreviewImage = GameUI.AddImage(UPC.stretchBottom, "debugger:image.log_preview", "ori:button_flat", GetMainCanvas().transform);
+            logPreviewImage = GameUI.AddImage(UIA.StretchBottom, "debugger:image.log_preview", "ori:button_flat", GetMainCanvas().transform);
             logPreviewImage.image.sprite = null;
             SetLogPreviewImageTransform();
             logPreviewImage.image.color = new Color(0.4f, 0.4f, 0.4f, 0.75f);
@@ -472,7 +474,7 @@ namespace Debugger
 
             InitLogPreviewImage();
 
-            logPreviewText = GameUI.AddText(UPC.stretchDouble, "debugger:text.log_preview", logPreviewImage);
+            logPreviewText = GameUI.AddText(UIA.StretchDouble, "debugger:text.log_preview", logPreviewImage);
             logPreviewText.text.alignment = TMPro.TextAlignmentOptions.Left;
             logPreviewText.text.overflowMode = TMPro.TextOverflowModes.Ellipsis;
             logPreviewText.text.SetFontSize(12);
@@ -492,7 +494,7 @@ namespace Debugger
 
             InitLogToolsPanel();
 
-            normalLogCountImage = GameUI.AddImage(UPC.upperRight, "debugger:image.normal_log_count", "debugger:normal_log_icon", logToolsPanel);
+            normalLogCountImage = GameUI.AddImage(UIA.UpperRight, "debugger:image.normal_log_count", "debugger:normal_log_icon", logToolsPanel);
             normalLogCountImage.SetSizeDelta(logToolsHeight, logToolsHeight);
             normalLogCountImage.SetAPos(-normalLogCountImage.sd.x / 2, -normalLogCountImage.sd.y / 2);
             normalLogCountImage.image.raycastTarget = false;
@@ -505,7 +507,7 @@ namespace Debugger
 
             InitLogToolsPanel();
 
-            errorLogCountImage = GameUI.AddImage(UPC.upperRight, "debugger:image.error_log_count", "debugger:error_log_icon", logToolsPanel);
+            errorLogCountImage = GameUI.AddImage(UIA.UpperRight, "debugger:image.error_log_count", "debugger:error_log_icon", logToolsPanel);
             errorLogCountImage.SetSizeDelta(logToolsHeight, logToolsHeight);
             errorLogCountImage.SetAPosOnBySizeLeft(normalLogCountImage, 1);
             errorLogCountImage.image.raycastTarget = false;
@@ -518,7 +520,7 @@ namespace Debugger
 
             InitLogToolsPanel();
 
-            exceptionLogCountImage = GameUI.AddImage(UPC.upperRight, "debugger:image.exception_log_count", "debugger:exception_log_icon", logToolsPanel);
+            exceptionLogCountImage = GameUI.AddImage(UIA.UpperRight, "debugger:image.exception_log_count", "debugger:exception_log_icon", logToolsPanel);
             exceptionLogCountImage.SetSizeDelta(logToolsHeight, logToolsHeight);
             exceptionLogCountImage.SetAPosOnBySizeLeft(errorLogCountImage, 1);
             exceptionLogCountImage.image.raycastTarget = false;
@@ -531,7 +533,7 @@ namespace Debugger
 
             InitLogToolsPanel();
 
-            warningLogCountImage = GameUI.AddImage(UPC.upperRight, "debugger:image.warning_log_count", "debugger:warning_log_icon", logToolsPanel);
+            warningLogCountImage = GameUI.AddImage(UIA.UpperRight, "debugger:image.warning_log_count", "debugger:warning_log_icon", logToolsPanel);
             warningLogCountImage.SetSizeDelta(logToolsHeight, logToolsHeight);
             warningLogCountImage.SetAPosOnBySizeLeft(exceptionLogCountImage, 1);
             warningLogCountImage.image.raycastTarget = false;
@@ -546,7 +548,7 @@ namespace Debugger
 
             InitNormalLogCountImage();
 
-            normalLogCountText = GameUI.AddText(UPC.middle, "debugger:text.normal_log_count", normalLogCountImage);
+            normalLogCountText = GameUI.AddText(UIA.Middle, "debugger:text.normal_log_count", normalLogCountImage);
             normalLogCountText.text.SetFontSize(13);
             normalLogCountText.autoCompareText = false;
             normalLogCountText.AfterRefreshing += t =>
@@ -563,7 +565,7 @@ namespace Debugger
 
             InitErrorLogCountImage();
 
-            errorLogCountText = GameUI.AddText(UPC.middle, "debugger:text.error_log_count", errorLogCountImage);
+            errorLogCountText = GameUI.AddText(UIA.Middle, "debugger:text.error_log_count", errorLogCountImage);
             errorLogCountText.text.SetFontSize(13);
             normalLogCountText.autoCompareText = false;
             errorLogCountText.AfterRefreshing += t =>
@@ -580,7 +582,7 @@ namespace Debugger
 
             InitExceptionLogCountImage();
 
-            exceptionLogCountText = GameUI.AddText(UPC.middle, "debugger:text.exception_log_count", exceptionLogCountImage);
+            exceptionLogCountText = GameUI.AddText(UIA.Middle, "debugger:text.exception_log_count", exceptionLogCountImage);
             exceptionLogCountText.text.SetFontSize(13);
             normalLogCountText.autoCompareText = false;
             exceptionLogCountText.AfterRefreshing += t =>
@@ -597,7 +599,7 @@ namespace Debugger
 
             InitWarningLogCountImage();
 
-            warningLogCountText = GameUI.AddText(UPC.middle, "debugger:text.warning_log_count", warningLogCountImage);
+            warningLogCountText = GameUI.AddText(UIA.Middle, "debugger:text.warning_log_count", warningLogCountImage);
             warningLogCountText.text.SetFontSize(13);
             normalLogCountText.autoCompareText = false;
             warningLogCountText.AfterRefreshing += t =>
@@ -607,19 +609,19 @@ namespace Debugger
             warningLogCountText.text.raycastTarget = false;
         }
 
-        private static StringBuilder gameStatusSB = new StringBuilder();
+        private static readonly StringBuilder gameStatusSB = new();
 
         public static void InitGameStatusText()
         {
             if (gameStatusText)
                 return;
 
-            InitLogPanel();
+            IntiDetailedLog();
 
-            gameStatusText = GameUI.AddText(UPC.upperLeft, "debugger:text.game_status", GetFrequentSimpleCanvas().transform);
+            gameStatusText = GameUI.AddText(UIA.UpperLeft, "debugger:text.game_status", GetFrequentSimpleCanvas().transform);
             gameStatusText.text.SetFontSize(12);
             gameStatusText.SetSizeDelta(600, logPanel.sd.y);
-            gameStatusText.SetAPos(logPanel.ap.x + (gameStatusText.sd.x / 2) + (logPanel.sd.x / 2) + 10, (-gameStatusText.sd.y / 2 - 10));
+            gameStatusText.SetAPos(logPanel.ap.x + (gameStatusText.sd.x / 2) + (logPanel.sd.x / 2) + 10, -detailedLogSize.y - gameStatusText.sd.y / 2 - 10);
             gameStatusText.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
             gameStatusText.AfterRefreshing += t =>
             {
@@ -627,21 +629,27 @@ namespace Debugger
                 {
                     gameStatusSB.Clear();
 
-                    gameStatusSB.AppendLine($"时间: {GTime.time24Format} ({GTime.time}/{GTime.timeOneDay}) - 流速:{GTime.timeSpeed}");
-                    gameStatusSB.AppendLine($"随机更新几率: {RandomUpdater.randomUpdateProbability}");
+                    gameStatusSB.AppendLine($"FPS: {(int)Tools.smoothFps}");
+                    gameStatusSB.AppendLine($"日志显示器数量: {logShowers.Count}/{LogShowerPool.createIndex}");
 
-                    if (Player.TryGetLocal(out Player p))
+                    if (GScene.name == SceneNames.GameScene)
                     {
-                        gameStatusSB.AppendLine($"玩家位置: {(Vector2)p.transform.position}");
-                        gameStatusSB.AppendLine($"玩家速度: {p.rb.velocity}");
+                        gameStatusSB.AppendLine($"时间: {GTime.time24Format} ({GTime.time}/{GTime.timeOneDay}) - 流速:{GTime.timeSpeed}");
+                        gameStatusSB.AppendLine($"随机更新几率: {RandomUpdater.randomUpdateProbability}");
+                        gameStatusSB.AppendLine($"实体数量: {EntityCenter.all.Count}");
 
-                        gameStatusSB.AppendLine($"玩家血量: {p.health}");
-
-                        gameStatusSB.AppendLine($"区域序列: {p.regionIndex}");
-                    }
-                    if (GFiles.world != null)
-                    {
-                        gameStatusSB.AppendLine($"世界名: {GFiles.world.basicData.worldName} 种子: {GFiles.world.basicData.seed}");
+                        if (Player.TryGetLocal(out Player p))
+                        {
+                            gameStatusSB.AppendLine($"玩家位置: {(Vector2)p.transform.position}");
+                            gameStatusSB.AppendLine($"指针世界位置: {p.cursorWorldPos}");
+                            gameStatusSB.AppendLine($"玩家速度: {p.rb.velocity}");
+                            gameStatusSB.AppendLine($"玩家血量: {p.health}");
+                            gameStatusSB.AppendLine($"区域序列: {p.regionIndex}");
+                        }
+                        if (GFiles.world != null)
+                        {
+                            gameStatusSB.AppendLine($"世界名: {GFiles.world.basicData.worldName} (种子: {GFiles.world.basicData.seed})");
+                        }
                     }
                 }
                 catch (System.Exception)
@@ -673,6 +681,8 @@ namespace Debugger
             InitLogPreviewText();
             IntiDetailedLog();
 
+            InitGameStatusText();
+
             fastButtons = new()
             {
                 //typeof(Player).GetMethod("ServerRunCallTry")
@@ -686,7 +696,7 @@ namespace Debugger
         {
             foreach (MethodInfo mtd in fastButtons)
             {
-                var button = GameUI.AddButton(UPC.middle, $"debugger:button.fast_button.{mtd.DeclaringType.FullName}.{mtd.Name}");
+                var button = GameUI.AddButton(UIA.Middle, $"debugger:button.fast_button.{mtd.DeclaringType.FullName}.{mtd.Name}");
                 button.buttonText.text.text = $"{mtd.DeclaringType.FullName}.{mtd.Name}";
                 button.buttonText.autoCompareText = false;
 
@@ -717,7 +727,7 @@ namespace Debugger
 
         public static Canvas AddCanvasToEntity(Entity entity)
         {
-            GameObject go = new GameObject("Canvas");
+            GameObject go = new("Canvas");
             go.transform.SetParent(entity.transform);
             Canvas canvas = go.AddComponent<Canvas>();
             canvas.transform.localPosition = Vector3.zero;
@@ -739,19 +749,19 @@ namespace Debugger
         #endregion
 
         #region 实体信息展示
-        public static void ShowEntityNetId(Entity entity) => MethodAgent.TryRun(() =>
+        public static void ShowEntityNetId(Entity entity) => MethodAgent.DebugRun(() =>
         {
             Canvas canvas = GetOrAddCanvasFromEntity(entity);
 
-            TextIdentity text = GameUI.AddText(UPC.middle, $"debugger:text.entity_net_id_{entity.netId}", canvas.gameObject);
+            TextIdentity text = GameUI.AddText(UIA.Middle, $"debugger:text.entity_net_id_{entity.netId}", canvas.gameObject);
             text.rt.AddLocalPosY(-45);
             text.text.SetFontSize(12);
             text.text.alignment = TMPro.TextAlignmentOptions.Top;
             text.OnUpdate += o => o.rt.localScale = new Vector2(entity.transform.localScale.x.Sign(), 1);
             text.AfterRefreshing += p => p.text.text = $"NetId={entity.netId}";
-        }, true);
+        });
 
-        public static void ShowEntitySandboxIndex(Entity entity, Vector2Int _) => MethodAgent.TryRun(() =>
+        public static void ShowEntitySandboxIndex(Entity entity, Vector2Int _) => MethodAgent.DebugRun(() =>
         {
             string textIdShouldBe = $"debugger:text.entity_region_index_{entity.netId}";
 
@@ -761,7 +771,7 @@ namespace Debugger
             {
                 Canvas canvas = GetOrAddCanvasFromEntity(entity);
 
-                text = GameUI.AddText(UPC.middle, textIdShouldBe, canvas.gameObject);
+                text = GameUI.AddText(UIA.Middle, textIdShouldBe, canvas.gameObject);
                 text.rt.AddLocalPosY(-60);
                 text.text.SetFontSize(12);
                 text.text.alignment = TMPro.TextAlignmentOptions.Top;
@@ -770,13 +780,13 @@ namespace Debugger
             }
 
             text.RefreshUI();
-        }, true);
+        });
         #endregion
 
         #region 日志展示
         public static class LogShowerPool
         {
-            public static Queue<LogShower> queue = new();
+            public static Stack<LogShower> stack = new();
             public static int createIndex;
 
             public static LogShower Get(string textContent, LogType type)
@@ -792,21 +802,15 @@ namespace Debugger
                     _ => "debugger:normal_log_icon",
                 };
 
-                if (queue.Count == 0)
+                if (stack.Count == 0)
                 {
-                    string textAndImageIdFix = type switch
-                    {
-                        LogType.Warning => "warning" + createIndex,
-                        LogType.Error => "error" + createIndex,
-                        LogType.Exception => "exception" + createIndex,
-                        _ => "normal" + createIndex,
-                    };
+                    string idPostfix = $"_{createIndex}";
                     createIndex++;
 
                     //如果不是的话就直接创建物体
-                    ImageIdentity bg = GameUI.AddImage(UPC.upperLeft, "debugger:image.log_" + textAndImageIdFix, "ori:button_flat");
-                    TextIdentity text = GameUI.AddText(UPC.middle, "debugger:text.log_" + textAndImageIdFix, bg);
-                    ButtonIdentity button = GameUI.AddButton(UPC.upperLeft, "debugger:image.log_" + textAndImageIdFix, text, textureId);
+                    ImageIdentity bg = GameUI.AddImage(UIA.UpperLeft, "debugger:image.log_" + idPostfix, "ori:button_flat");
+                    TextIdentity text = GameUI.AddText(UIA.Middle, "debugger:text.log_" + idPostfix, bg);
+                    ButtonIdentity button = GameUI.AddButton(UIA.Left, "debugger:button.log_" + idPostfix, text, textureId);
 
                     //设置颜色以增强层级
                     bg.image.SetColorBrightness(0.7f);
@@ -817,9 +821,9 @@ namespace Debugger
                     button.buttonText.text.raycastTarget = false;
 
                     //设置按钮样式并绑定方法
-                    button.SetSizeDelta(90, 90);
-                    button.SetAPos(15, -15);
-                    button.rt.localScale = new Vector2(0.3f, 0.3f);
+                    var buttonSize = logScrollView.gridLayoutGroup.cellSize.y * 0.75f;
+                    button.SetSizeDelta(buttonSize, buttonSize);
+                    button.SetAPos(button.sd.x / 2 + 3, 0);
                     button.OnClickBind(() =>
                     {
                         //将文本获取至剪贴板
@@ -831,6 +835,9 @@ namespace Debugger
                             detailedLogText.text.text = text.text.text;
                             detailedLogText.text.pageToDisplay = 1;
                         }
+
+                        //恢复详细日志文本的位置
+                        SetDetailedLogTextPosition(0);
                     });
 
                     //关闭自动刷新
@@ -839,65 +846,71 @@ namespace Debugger
                     //更改字体样式   (margin 可以让文本不伸到 button 里面)
                     text.text.SetFontSize(10);
                     text.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
-                    text.text.overflowMode = TMPro.TextOverflowModes.Page;
-                    text.text.margin = new Vector2(27.5f, 0);
+                    text.text.overflowMode = TMPro.TextOverflowModes.Truncate;
+                    text.text.margin = new Vector4(27.5f, 2, 0, 2);
 
-                    //默认为第一个文本, 如果没重复过, 默认禁用文本
-                    button.buttonText.AfterRefreshing += t => t.text.text = 1.ToString();
-                    button.buttonText.gameObject.SetActive(false);
 
                     //设置字体大小, 文本框大小, 颜色, 位置
-                    button.buttonText.text.SetFontSize(30);
-                    button.buttonText.SetSizeDelta(90, 40);
-                    button.buttonText.text.color = Color.green;
-                    button.buttonText.SetAPosY(-button.sd.y / 2 - button.buttonText.sd.y / 2);
+                    //// 初始化日志重复次数
+                    GameObject.Destroy(button.buttonText.gameObject);
+                    //// button.buttonText.gameObject.SetActive(false);
+                    //// button.buttonText.text.text = "1";
+                    //// button.buttonText.autoCompareText = false;
+                    //// button.buttonText.text.SetFontSize(30);
+                    //// button.buttonText.SetSizeDelta(90, 40);
+                    //// button.buttonText.text.color = Color.green;
+                    //// button.buttonText.SetAPosY(-button.sd.y / 2 - button.buttonText.sd.y / 2);
 
                     //设为 ScrollView 子物体后会被打乱, 因此要重新设置
                     logScrollView.AddChild(bg);
                     text.sd = logScrollView.gridLayoutGroup.cellSize;
                     bg.rt.localScale = Vector3.one;
 
-                    //推入池中
+                    //完成
                     shower = new(bg, text, button);
-                    queue.Enqueue(shower);
                 }
                 else
                 {
-                    shower = queue.Peek();
+                    shower = stack.Pop();
+                    shower.bg.gameObject.SetActive(true);
+                    shower.button.image.sprite = ModFactory.CompareTexture(textureId).sprite;
+                    shower.bg.transform.SetAsLastSibling();
                 }
 
                 //刷新文本
                 shower.text.text.text = textContent;
 
                 //刷新日志预览
-                if (logPreviewText)
-                {
-                    logPreviewText.text.text = textContent;
-                }
+                logPreviewText.text.text = textContent;
 
                 return shower;
             }
 
+            public static void Recover(LogShower shower)
+            {
+                shower.bg.gameObject.SetActive(false);
+                stack.Push(shower);
+            }
         }
+
         public static void AddLogShower(string textContent, LogType type)
         {
-            //检测前一个的内容是否和当前一样
-            if (logShowers.Count > 0 && logShowers[^1].text.text.text == textContent)
-            {
-                //如果是的话就直接添加数字 (节约性能)
-                LogShower lastShower = logShowers[^1];
-
-                //使文本数字加 1
-                lastShower.button.buttonText.AfterRefreshing += t => t.text.text = (lastShower.button.buttonText.text.text.ToInt() + 1).ToString();
-                lastShower.button.buttonText.RefreshUI();
-
-                //启用文本
-                lastShower.button.buttonText.gameObject.SetActive(true);
-            }
-            else
-            {
-                logShowers.Add(LogShowerPool.Get(textContent, type));
-            }
+            //// //检测前一个的内容是否和当前一样
+            //// if (logShowers.Count > 0 && logShowers[^1].text.text.text == textContent)
+            //// {
+            ////     //如果是的话就直接添加数字 (节约性能)
+            ////     LogShower lastShower = logShowers[^1];
+            //// 
+            ////     //使文本数字加 1
+            ////     lastShower.button.buttonText.text.text = (lastShower.button.buttonText.text.text.ToInt() + 1).ToString();
+            //// 
+            ////     //启用文本
+            ////     lastShower.button.buttonText.gameObject.SetActive(true);
+            //// }
+            //// else
+            //// {
+            logShowers.Add(LogShowerPool.Get(textContent, type));
+            //// }
 
             //添加日志数量
             switch (type)
@@ -918,7 +931,7 @@ namespace Debugger
         }
 
         internal static StringBuilder logBuilder = new();
-        public static void OnHandleLog(string logString, string stack, LogType type)
+        public static void OnHandleLog(string logString, string _, LogType type)
         {
             logBuilder.Clear();
 
@@ -948,21 +961,13 @@ namespace Debugger
             }
 
             logBuilder.Append("\n\n");
-
-            try
-            {
-                string origin = Environment.StackTrace;
-
-                logBuilder.Append(Tools.HighlightedStackTrace());
-            }
-            catch
-            {
-
-            }
+            logBuilder.Append(Tools.HighlightedStackTrace());
 
             logBuilder.Append("</color>");
 
-            MethodAgent.RunOnMainThread(_ => AddLogShower(logBuilder.ToString(), type));
+
+            var result = logBuilder.ToString();
+            MethodAgent.QueueOnMainThread(_ => AddLogShower(result, type));
         }
         #endregion
     }
