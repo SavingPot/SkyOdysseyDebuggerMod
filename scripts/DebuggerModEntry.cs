@@ -55,7 +55,7 @@ namespace Debugger
             MethodAgent.updates += RefreshTexts;
             MethodAgent.updates += Core.CheckSelectedObject;
             MethodAgent.updates += Core.DebuggerCanvasActiveControl;
-            EntityCenter.OnAddEntity += Core.ShowEntityNetId;
+            EntityCenter.OnAddEntity += Core.ShowEntityInfo;
             EntityCenter.OnRemoveEntity += Core.RecoverEntityCanvasFrom;
             Chunk.SetRenderersEnabled += (chunk, enabled) =>
             {
