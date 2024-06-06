@@ -11,10 +11,6 @@ namespace Debugger
 {
     public class DebuggerModEntry : ModEntry
     {
-        public static bool setCameraOrthographicSize = true;
-        public static float cameraEnableOrthographicSize = 20;
-        public static float cameraDisableOrthographicSize = 11;
-
         internal static Sprite warningLogSprite;
         internal static Sprite errorLogSprite;
         internal static Sprite exceptionLogSprite;
@@ -29,48 +25,46 @@ namespace Debugger
             exceptionLogSprite = ModFactory.CompareTexture("debugger:exception_log_icon").sprite;
             normalLogSprite = ModFactory.CompareTexture("debugger:normal_log_icon").sprite;
 
-            //初始化日志面板
-            Core.InitLogPanel();
+            //初始化调试器 UI
+            LogView.Init();
+            FastButtonView.Init();
+
+            //将日志代理到 Debugger
+            Application.logMessageReceivedThreaded += LogView.OnHandleLog;
+            //// GInit.writeLogsToFile = false;
+            //// GInit.totalLogTexts.Clear();
 
             //将加载调试器前的日志显示
-            foreach (var item in GInit.totalLogTexts)
+            foreach (var item in GInit.totalLogTexts.ToArray())
             {
-                Core.AddLogShower(item.Item1, item.Item2);
+                LogView.AddLogShower(item.Item1, item.Item2);
             }
 
             Performance.OutputComputerInfo();
 
-            //将日志代理到 Debugger
-            //// GInit.writeLogsToFile = false;
-            //// GInit.totalLogTexts.Clear();
-            Application.logMessageReceivedThreaded += Core.OnHandleLog;
 
             GScene.AfterChanged += scene =>
             {
-                Core.RefreshFastButtons();
+                FastButtonView.RefreshFastButtons();
 
                 if (scene.name == SceneNames.GameScene)
                 {
-                    Core.InitPanelForGameScene();
+                    GameSceneDebugger.Init();
                 }
                 else
                 {
-                    Core.DestroyPanelForGameScene();
-                    Core.EntityCanvasPool.stack.Clear();
+                    GameSceneDebugger.Destroy();
+                    EntityInfoShower.EntityCanvasPool.stack.Clear();
                 }
 
-                Core.SetUIsToFirst();
+                Center.SetUIsToFirst();
             };
 
-            MethodAgent.updates += RefreshTexts;
-            MethodAgent.updates += Core.CheckSelectedObject;
-            MethodAgent.updates += Core.DebuggerCanvasActiveControl;
-            EntityCenter.OnAddEntity += Core.ShowEntityInfo;
-            EntityCenter.OnRemoveEntity += Core.RecoverEntityCanvasFrom;
-            Chunk.SetRenderersEnabled += (chunk, enabled) =>
-            {
-                Core.chunk.SetLineRendererActivity(chunk, false);
-            };
+            MethodAgent.updates += GameSceneDebugger.Update;
+            MethodAgent.updates += LogView.CheckSelectedObject;
+            MethodAgent.updates += Center.DebuggerCanvasActiveControl;
+            EntityCenter.OnAddEntity += EntityInfoShower.ShowEntityInfo;
+            EntityCenter.OnRemoveEntity += EntityInfoShower.RecoverEntityCanvasFrom;
             GFiles.settings.uiSpeed = 100;
             CoroutineStarter.Do(IESetUIsToFirst());
 
@@ -88,7 +82,7 @@ namespace Debugger
 
         IEnumerator IESetUIsToFirst()
         {
-            Core.SetUIsToFirst();
+            Center.SetUIsToFirst();
 
             for (int i = 0; i < 10; i++)
             {
@@ -97,27 +91,6 @@ namespace Debugger
                 yield return null;
                 yield return null;
                 yield return null;
-            }
-        }
-
-        public void RefreshTexts()
-        {
-            if (Core.logPanel)
-            {
-                if (Core.gameStatusText && Core.gameStatusText.gameObject.activeInHierarchy)
-                    Core.gameStatusText.RefreshUI();
-
-                if (setCameraOrthographicSize && GScene.active.name == SceneNames.GameScene)
-                {
-                    Tools.instance.mainCamera.orthographicSize = cameraEnableOrthographicSize;
-                }
-            }
-            else
-            {
-                if (setCameraOrthographicSize && GScene.active.name == SceneNames.GameScene)
-                {
-                    Tools.instance.mainCamera.orthographicSize = cameraDisableOrthographicSize;
-                }
             }
         }
     }
