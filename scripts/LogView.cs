@@ -243,6 +243,8 @@ namespace Debugger
             detailedLogBackground.sd = detailedLogSize;
             detailedLogBackground.SetAPos(detailedLogSize.x / 2, -detailedLogSize.y / 2);
             detailedLogBackground.gameObject.AddComponent<RectMask2D>(); //防止字体超出背景
+
+            //文本滚动条
             var slider = GameUI.AddSlider(UIA.Left, "debugger:slider.log_detailed", detailedLogBackground);
             slider.slider.value = 0;
             slider.slider.transform.localRotation = Quaternion.Euler(0, 0, -90);
@@ -252,8 +254,8 @@ namespace Debugger
 
             detailedLogText = GameUI.AddText(UIA.Up, "debugger:text.log_detailed", detailedLogBackground);
             detailedLogText.text.SetFontSize(11);
-            detailedLogText.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
-            detailedLogText.text.overflowMode = TMPro.TextOverflowModes.Page;
+            detailedLogText.text.alignment = TextAlignmentOptions.TopLeft;
+            detailedLogText.text.overflowMode = TextOverflowModes.Page;
             detailedLogText.text.margin = new Vector4(30, 10, 10, 0);
             detailedLogText.text.raycastTarget = false;
             detailedLogText.autoCompareText = false;
