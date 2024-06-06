@@ -15,9 +15,19 @@ namespace Debugger
         public static float cameraEnableOrthographicSize = 20;
         public static float cameraDisableOrthographicSize = 11;
 
+        internal static Sprite warningLogSprite;
+        internal static Sprite errorLogSprite;
+        internal static Sprite exceptionLogSprite;
+        internal static Sprite normalLogSprite;
+
         public override void OnLoaded()
         {
             base.OnLoaded();
+
+            warningLogSprite = ModFactory.CompareTexture("debugger:warning_log_icon").sprite;
+            errorLogSprite = ModFactory.CompareTexture("debugger:error_log_icon").sprite;
+            exceptionLogSprite = ModFactory.CompareTexture("debugger:exception_log_icon").sprite;
+            normalLogSprite = ModFactory.CompareTexture("debugger:normal_log_icon").sprite;
 
             //初始化日志面板
             Core.InitLogPanel();

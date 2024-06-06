@@ -661,12 +661,12 @@ namespace Debugger
                 LogShower shower;
 
                 //确定 ID 后缀和日志的图标
-                string textureId = type switch
+                var sprite = type switch
                 {
-                    LogType.Warning => "debugger:warning_log_icon",
-                    LogType.Error => "debugger:error_log_icon",
-                    LogType.Exception => "debugger:exception_log_icon",
-                    _ => "debugger:normal_log_icon",
+                    LogType.Warning => DebuggerModEntry.warningLogSprite,
+                    LogType.Error => DebuggerModEntry.errorLogSprite,
+                    LogType.Exception => DebuggerModEntry.exceptionLogSprite,
+                    _ => DebuggerModEntry.normalLogSprite,
                 };
 
                 if (stack.Count == 0)
@@ -677,7 +677,7 @@ namespace Debugger
                     //如果不是的话就直接创建物体
                     ImageIdentity bg = GameUI.AddImage(UIA.UpperLeft, "debugger:image.log_" + idPostfix, "ori:button_flat");
                     TextIdentity text = GameUI.AddText(UIA.Middle, "debugger:text.log_" + idPostfix, bg);
-                    ButtonIdentity button = GameUI.AddButton(UIA.Left, "debugger:button.log_" + idPostfix, text, textureId);
+                    ButtonIdentity button = GameUI.AddButton(UIA.Left, "debugger:button.log_" + idPostfix, text, null);
 
                     //设置颜色以增强层级
                     bg.image.SetColorBrightness(0.7f);
@@ -685,7 +685,7 @@ namespace Debugger
                     //日志会大量出现, 要优化性能
                     bg.image.raycastTarget = false;
                     text.text.raycastTarget = false;
-                    button.buttonText.text.raycastTarget = false;
+                    ////button.buttonText.text.raycastTarget = false;
 
                     //设置按钮样式并绑定方法
                     var buttonSize = logScrollView.gridLayoutGroup.cellSize.y * 0.75f;
@@ -712,8 +712,8 @@ namespace Debugger
 
                     //更改字体样式   (margin 可以让文本不伸到 button 里面)
                     text.text.SetFontSize(10);
-                    text.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
-                    text.text.overflowMode = TMPro.TextOverflowModes.Truncate;
+                    text.text.alignment = TextAlignmentOptions.TopLeft;
+                    text.text.overflowMode = TextOverflowModes.Truncate;
                     text.text.margin = new Vector4(27.5f, 2, 0, 2);
 
 
@@ -740,11 +740,11 @@ namespace Debugger
                 {
                     shower = stack.Pop();
                     shower.bg.gameObject.SetActive(true);
-                    shower.button.image.sprite = ModFactory.CompareTexture(textureId).sprite;
                     shower.bg.transform.SetAsLastSibling();
                 }
 
-                //刷新文本
+                //刷新展示器
+                shower.button.image.sprite = sprite;
                 shower.text.text.text = textContent;
 
                 //刷新日志预览
@@ -785,12 +785,15 @@ namespace Debugger
                 case LogType.Warning:
                     warningLogCount++;
                     break;
+
                 case LogType.Error:
                     errorLogCount++;
                     break;
+
                 case LogType.Exception:
                     exceptionLogCount++;
                     break;
+
                 default:
                     normalLogCount++;
                     break;
@@ -805,21 +808,21 @@ namespace Debugger
             switch (type)
             {
                 case LogType.Warning:
-                    logBuilder.Append("<color=yellow>");
-                    logBuilder.Append(logString);
-                    logBuilder.Append("</color>");
+                    logBuilder.Append("<color=yellow>")
+                              .Append(logString)
+                              .Append("</color>");
                     break;
 
                 case LogType.Error:
-                    logBuilder.Append("<color=orange>");
-                    logBuilder.Append(logString);
-                    logBuilder.Append("</color>");
+                    logBuilder.Append("<color=orange>")
+                              .Append(logString)
+                              .Append("</color>");
                     break;
 
                 case LogType.Exception:
-                    logBuilder.Append("<color=red>");
-                    logBuilder.Append(logString);
-                    logBuilder.Append("</color>");
+                    logBuilder.Append("<color=red>")
+                              .Append(logString)
+                              .Append("</color>");
                     break;
 
                 default:
@@ -827,10 +830,9 @@ namespace Debugger
                     break;
             }
 
-            logBuilder.Append("\n\n");
-            logBuilder.Append(Tools.HighlightedStackTrace());
-
-            logBuilder.Append("</color>");
+            logBuilder.Append("\n\n")
+                      .Append(Tools.HighlightedStackTrace())
+                      .Append("</color>");
 
 
             var result = logBuilder.ToString();
