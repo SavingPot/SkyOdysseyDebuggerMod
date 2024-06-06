@@ -66,7 +66,6 @@ namespace Debugger
             EntityCenter.OnAddEntity += EntityInfoShower.ShowEntityInfo;
             EntityCenter.OnRemoveEntity += EntityInfoShower.RecoverEntityCanvasFrom;
             GFiles.settings.uiSpeed = 100;
-            CoroutineStarter.Do(IESetUIsToFirst());
 
 
 
@@ -78,20 +77,6 @@ namespace Debugger
                     Time.timeScale = Time.timeScale == 0 ? 1 : 0;
                 }
             };
-        }
-
-        IEnumerator IESetUIsToFirst()
-        {
-            Center.SetUIsToFirst();
-
-            for (int i = 0; i < 10; i++)
-            {
-                yield return null;
-                yield return null;
-                yield return null;
-                yield return null;
-                yield return null;
-            }
         }
     }
 }
