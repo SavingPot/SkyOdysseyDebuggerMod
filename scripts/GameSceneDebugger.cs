@@ -111,6 +111,7 @@ namespace Debugger
         {
             GameObject.Destroy(randomUpdateIB.gameObject);
             GameObject.Destroy(time24IB.gameObject);
+            GameObject.Destroy(gameStatusText.gameObject);
         }
     }
 }
