@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using GameCore;
 using GameCore.UI;
@@ -9,11 +10,28 @@ namespace Debugger
 {
     public static class GameSceneDebugger
     {
+        class BlockRecord
+        {
+            public Vector2Int offset;
+            public bool isBackground;
+            public string id;
+
+            public BlockRecord(Vector2Int offset, bool isBackground, string id)
+            {
+                this.offset = offset;
+                this.isBackground = isBackground;
+                this.id = id;
+            }
+        }
+
         public static InputButtonIdentity randomUpdateIB;
         public static InputButtonIdentity time24IB;
         public static TextIdentity gameStatusText;
         private static readonly StringBuilder gameStatusSB = new();
-        public static int inputButtonsHeight = 30;
+        public static bool isRecordingStructure;
+        static Vector2Int recordAnchorPos;
+        static List<BlockRecord> recordedBlocks = new();
+        public const int inputButtonsHeight = 30;
 
 
         public static void Init()
@@ -99,6 +117,13 @@ namespace Debugger
 
                 t.text.text = gameStatusSB.ToString();
             };
+
+
+
+
+            //绑定结构体记录事件
+            GameCallbacks.OnAddBlock += EnqueueBlockToQueue;
+            GameCallbacks.OnBlockDestroyed += DequeueBlockFromQueue;
         }
 
         public static void Update()
@@ -112,6 +137,119 @@ namespace Debugger
             GameObject.Destroy(randomUpdateIB.gameObject);
             GameObject.Destroy(time24IB.gameObject);
             GameObject.Destroy(gameStatusText.gameObject);
+        }
+
+
+
+
+        [FastButton("生成结构体")]
+        public static void GenerateStructure()
+        {
+            var structure = ModFactory.CompareStructure(StructureID.GhostShip);
+
+            Map.instance.GenerateStructure(structure, PosConvert.WorldToMapPos(Player.local.transform.position));
+        }
+
+        [FastButton("在记录锚点处生成结构体")]
+        public static void GenerateStructureAtRecordAnchor()
+        {
+            if (recordAnchorPos.x == int.MaxValue && recordAnchorPos.y == int.MaxValue)
+            {
+                Debug.LogWarning("请先设置记录锚点");
+                return;
+            }
+
+            var structure = ModFactory.CompareStructure(StructureID.GhostShip);
+
+            Map.instance.GenerateStructure(structure, recordAnchorPos);
+        }
+
+        [FastButton("开始或结束 记录结构体", "Click to say hello to the console")]
+        public static void RecordStructure()
+        {
+            if (isRecordingStructure)
+                EndRecordingStructure();
+            else
+                BeginRecordingStructure();
+        }
+
+        public static void BeginRecordingStructure()
+        {
+            isRecordingStructure = true;
+            recordAnchorPos = new(int.MaxValue, int.MaxValue);
+            recordedBlocks.Clear();
+            Debug.Log("开始记录结构体");
+        }
+
+        public static void EnqueueBlockToQueue(Vector2Int pos, bool isBackground, Block block, Chunk chunk)
+        {
+            if (!isRecordingStructure)
+                return;
+
+            //设置锚点位置
+            if (recordAnchorPos.x == int.MaxValue && recordAnchorPos.y == int.MaxValue)
+                recordAnchorPos = pos;
+
+            //计算相对锚点偏移
+            var offset = pos - recordAnchorPos;
+
+            //检查是否有相同的方块
+            for (int i = 0; i < recordedBlocks.Count; i++)
+            {
+                var blockRecord = recordedBlocks[i];
+                if (blockRecord.offset == offset && blockRecord.isBackground == isBackground)
+                {
+                    recordedBlocks.RemoveAt(i);
+                    Debug.LogWarning($"已经记录过相同的方块了, 将被覆盖, 位置: {pos}, 偏移: {offset}, 背景: {isBackground}");
+                    break;
+                }
+            }
+
+            //添加到队列
+            recordedBlocks.Add(new(offset, isBackground, block.data.id));
+        }
+
+        public static void DequeueBlockFromQueue(Vector2Int pos, bool isBackground, BlockData blockData)
+        {
+            if (!isRecordingStructure)
+                return;
+
+            //计算相对锚点偏移
+            var offset = pos - recordAnchorPos;
+
+            //删除队列中的对应位置的方块
+            for (int i = 0; i < recordedBlocks.Count; i++)
+            {
+                var block = recordedBlocks[i];
+                if (block.offset == offset && block.isBackground == isBackground)
+                {
+                    recordedBlocks.RemoveAt(i);
+                    return;
+                }
+            }
+
+            //如果被破坏的方块不在队列中, 则在该位置添加一个空方块
+            recordedBlocks.Add(new(offset, isBackground, null));
+        }
+
+        public static void EndRecordingStructure()
+        {
+            isRecordingStructure = false;
+
+            var structure = new StructureData
+            {
+                fixedBlocks = new AttachedBlockDatum[recordedBlocks.Count],
+                jsonFormat = GInit.gameVersion,
+            };
+
+            for (int i = 0; i < recordedBlocks.Count; i++)
+            {
+                var block = recordedBlocks[i];
+                structure.fixedBlocks[i] = new(block.id, block.offset, block.isBackground);
+            }
+
+            Debug.Log(structure.ToJObject().ToString());
+            Debug.Log("结束记录结构体");
         }
     }
 }

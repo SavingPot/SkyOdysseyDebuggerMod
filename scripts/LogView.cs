@@ -139,7 +139,7 @@ namespace Debugger
             };
         }
 
-        public static void OnHandleLog(string logString, string _, LogType type)
+        public static void OnHandleLog(string logString, string stackTrace, LogType type)
         {
             logBuilder.Clear();
 
@@ -169,7 +169,7 @@ namespace Debugger
             }
 
             logBuilder.Append("\n\n")
-                      .Append(Tools.HighlightedStackTrace())
+                      .Append(Tools.HighlightedStackTraceWithoutAt(stackTrace))
                       .Append("</color>");
 
 

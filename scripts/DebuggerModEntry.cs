@@ -6,6 +6,7 @@ using SP.Tools.Unity;
 using System.Linq;
 using System.Collections;
 using UnityEngine.InputSystem;
+using SP.Tools;
 
 namespace Debugger
 {
@@ -45,8 +46,6 @@ namespace Debugger
 
             GScene.AfterChanged += scene =>
             {
-                FastButtonView.RefreshFastButtons();
-
                 if (scene.name == SceneNames.GameScene)
                 {
                     GameSceneDebugger.Init();
@@ -77,6 +76,38 @@ namespace Debugger
                     Time.timeScale = Time.timeScale == 0 ? 1 : 0;
                 }
             };
+        }
+
+        public override void OnAllModsLoaded()
+        {
+            base.OnAllModsLoaded();
+
+            //获取快捷按钮
+            ModFactory.EachUserMethod((_, _, method) =>
+            {
+                //获取特性
+                if (!AttributeGetter.TryGetAttribute<FastButtonAttribute>(method, out var attribute))
+                    return;
+
+                //检查方法是否是静态方法
+                if (!method.IsStatic)
+                {
+                    Debug.LogError($"方法 {method.DeclaringType.FullName}.{method.Name} 不是静态方法，无法添加快捷按钮");
+                    return;
+                }
+
+                //检查方法是否有参数
+                if (method.GetParameters().Length > 0)
+                {
+                    Debug.LogError($"方法 {method.DeclaringType.FullName}.{method.Name} 有参数，无法添加快捷按钮");
+                    return;
+                }
+
+                FastButtonView.fastButtons.Add(new FastButton(ReflectionTools.MethodWrapperAction(null, method), attribute.name, attribute.tooltip));
+            });
+
+            //刷新快捷按钮
+            FastButtonView.RefreshFastButtons();
         }
     }
 }
