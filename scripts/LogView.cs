@@ -11,31 +11,31 @@ namespace Debugger
 {
     public static class LogView
     {
-        public static readonly List<LogShower> logShowers = new();
-        public static PanelIdentity logPanel;
-        public static ScrollViewIdentity logScrollView;
-        public static ImageIdentity detailedLogBackground;
-        public static TextIdentity detailedLogText;
-        public static PanelIdentity logToolsPanel;
-        public static ButtonIdentity clearLogsButton;
-        public static ToggleIdentity mostDownLogsToggle;
-        public static ToggleIdentity activateUIToggle;
-        public static ImageIdentity normalLogCountImage;
-        public static ImageIdentity errorLogCountImage;
-        public static ImageIdentity exceptionLogCountImage;
-        public static ImageIdentity warningLogCountImage;
-        public static TextIdentity normalLogCountText;
-        public static TextIdentity errorLogCountText;
-        public static TextIdentity exceptionLogCountText;
-        public static TextIdentity warningLogCountText;
-        public static ImageIdentity logPreviewBackground;
-        public static TextIdentity logPreviewText;
-        internal static StringBuilder logBuilder = new();
+        internal static readonly List<LogShower> logShowers = new();
+        internal static PanelIdentity logPanel;
+        internal static ScrollViewIdentity logScrollView;
+        internal static ImageIdentity detailedLogBackground;
+        private static TextIdentity detailedLogText;
+        private static PanelIdentity logToolsPanel;
+        private static ButtonIdentity clearLogsButton;
+        private static ToggleIdentity mostDownLogsToggle;
+        private static ToggleIdentity activateUIToggle;
+        private static ImageIdentity logPreviewBackground;
+        private static TextIdentity logPreviewText;
+        private static ImageIdentity normalLogCountImage;
+        private static ImageIdentity errorLogCountImage;
+        private static ImageIdentity exceptionLogCountImage;
+        private static ImageIdentity warningLogCountImage;
+        private static TextIdentity normalLogCountText;
+        private static TextIdentity errorLogCountText;
+        private static TextIdentity exceptionLogCountText;
+        private static TextIdentity warningLogCountText;
+        private static readonly StringBuilder logBuilder = new();
         private static int _normalLogCount;
         private static int _errorLogCount;
         private static int _exceptionLogCount;
         private static int _warningLogCount;
-        public static int normalLogCount
+        public static int NormalLogCount
         {
             get => _normalLogCount;
             set
@@ -44,7 +44,7 @@ namespace Debugger
                 normalLogCountText.RefreshUI();
             }
         }
-        public static int errorLogCount
+        public static int ErrorLogCount
         {
             get => _errorLogCount;
             set
@@ -53,7 +53,7 @@ namespace Debugger
                 errorLogCountText.RefreshUI();
             }
         }
-        public static int exceptionLogCount
+        public static int ExceptionLogCount
         {
             get => _exceptionLogCount;
             set
@@ -62,7 +62,7 @@ namespace Debugger
                 exceptionLogCountText.RefreshUI();
             }
         }
-        public static int warningLogCount
+        public static int WarningLogCount
         {
             get => _warningLogCount;
             set
@@ -87,7 +87,7 @@ namespace Debugger
 
 
 
-        public static void CheckSelectedObject()
+        internal static void CheckSelectedObject()
         {
             if (!activateUIToggle)
                 return;
@@ -99,47 +99,32 @@ namespace Debugger
         }
 
 
-        public static void AddLogShower(string textContent, LogType type)
+        internal static void AddLogShower(string textContent, LogType type)
         {
-            //// //检测前一个的内容是否和当前一样
-            //// if (logShowers.Count > 0 && logShowers[^1].text.text.text == textContent)
-            //// {
-            ////     //如果是的话就直接添加数字 (节约性能)
-            ////     LogShower lastShower = logShowers[^1];
-            //// 
-            ////     //使文本数字加 1
-            ////     lastShower.button.buttonText.text.text = (lastShower.button.buttonText.text.text.ToInt() + 1).ToString();
-            //// 
-            ////     //启用文本
-            ////     lastShower.button.buttonText.gameObject.SetActive(true);
-            //// }
-            //// else
-            //// {
             logShowers.Add(LogShowerPool.Get(textContent, type));
-            //// }
 
             //添加日志数量
             switch (type)
             {
                 case LogType.Warning:
-                    warningLogCount++;
+                    WarningLogCount++;
                     break;
 
                 case LogType.Error:
-                    errorLogCount++;
+                    ErrorLogCount++;
                     break;
 
                 case LogType.Exception:
-                    exceptionLogCount++;
+                    ExceptionLogCount++;
                     break;
 
                 default:
-                    normalLogCount++;
+                    NormalLogCount++;
                     break;
             };
         }
 
-        public static void OnHandleLog(string logString, string stackTrace, LogType type)
+        internal static void OnHandleLog(string logString, string stackTrace, LogType type)
         {
             logBuilder.Clear();
 
@@ -177,7 +162,7 @@ namespace Debugger
             MethodAgent.QueueOnMainThread(_ => AddLogShower(result, type));
         }
 
-        public static void Init()
+        internal static void Init()
         {
             /* ---------------------------------- 日志面板 ---------------------------------- */
             logPanel = GameUI.AddPanel("debugger:panel.log_show", Center.GetMainCanvas().transform);
@@ -274,10 +259,10 @@ namespace Debugger
             clearLogsButton.buttonText.text.SetFontSize(14);
             clearLogsButton.OnClickBind(() =>
             {
-                normalLogCount = 0;
-                errorLogCount = 0;
-                exceptionLogCount = 0;
-                warningLogCount = 0;
+                NormalLogCount = 0;
+                ErrorLogCount = 0;
+                ExceptionLogCount = 0;
+                WarningLogCount = 0;
 
                 foreach (var item in logShowers)
                 {
@@ -302,7 +287,7 @@ namespace Debugger
             normalLogCountText = GameUI.AddText(UIA.Middle, "debugger:text.normal_log_count", normalLogCountImage);
             normalLogCountText.text.SetFontSize(13);
             normalLogCountText.autoCompareText = false;
-            normalLogCountText.AfterRefreshing += t => t.text.text = normalLogCount.ToString();
+            normalLogCountText.AfterRefreshing += t => t.text.text = NormalLogCount.ToString();
             normalLogCountText.text.raycastTarget = false;
 
             //错误日志
@@ -313,7 +298,7 @@ namespace Debugger
             errorLogCountText = GameUI.AddText(UIA.Middle, "debugger:text.error_log_count", errorLogCountImage);
             errorLogCountText.text.SetFontSize(13);
             normalLogCountText.autoCompareText = false;
-            errorLogCountText.AfterRefreshing += t => t.text.text = errorLogCount.ToString();
+            errorLogCountText.AfterRefreshing += t => t.text.text = ErrorLogCount.ToString();
             errorLogCountText.text.raycastTarget = false;
 
             //异常日志
@@ -324,7 +309,7 @@ namespace Debugger
             exceptionLogCountText = GameUI.AddText(UIA.Middle, "debugger:text.exception_log_count", exceptionLogCountImage);
             exceptionLogCountText.text.SetFontSize(13);
             normalLogCountText.autoCompareText = false;
-            exceptionLogCountText.AfterRefreshing += t => t.text.text = exceptionLogCount.ToString();
+            exceptionLogCountText.AfterRefreshing += t => t.text.text = ExceptionLogCount.ToString();
             exceptionLogCountText.text.raycastTarget = false;
 
             //警告日志
@@ -335,7 +320,7 @@ namespace Debugger
             warningLogCountText = GameUI.AddText(UIA.Middle, "debugger:text.warning_log_count", warningLogCountImage);
             warningLogCountText.text.SetFontSize(13);
             normalLogCountText.autoCompareText = false;
-            warningLogCountText.AfterRefreshing += t => t.text.text = warningLogCount.ToString();
+            warningLogCountText.AfterRefreshing += t => t.text.text = WarningLogCount.ToString();
             warningLogCountText.text.raycastTarget = false;
 
 
@@ -365,26 +350,26 @@ namespace Debugger
             activateUIToggle.canvasGroup.ignoreParentGroups = true;
             activateUIToggle.SetAPosOnBySizeRight(mostDownLogsToggle, 5);
             activateUIToggle.text.text.SetFontSize(14);
-            activateUIToggle.text.text.alignment = TMPro.TextAlignmentOptions.Center;
+            activateUIToggle.text.text.alignment = TextAlignmentOptions.Center;
             activateUIToggle.OnValueChangeBind(v =>
             {
                 logPanel.canvasGroup.interactable = v;
             });
         }
 
-        public static void SetLogPanelTransform()
+        static void SetLogPanelTransform()
         {
             logPanel.SetAPos(logPanel.sd.x / 2, -logPanel.sd.y / 2);
             logPanel.rt.localScale = Vector3.one;
         }
 
-        public static void SetDetailedLogTextPosition(float value)
+        static void SetDetailedLogTextPosition(float value)
         {
             detailedLogText.SetAPosY(-detailedLogText.sd.y / 2 + detailedLogText.sd.y * value);
         }
 
 
-        public static void SetLogPreviewImageTransform()
+        static void SetLogPreviewImageTransform()
         {
             logPreviewBackground.SetAPos(0, 0);
             logPreviewBackground.rt.localScale = Vector3.one;
@@ -393,7 +378,7 @@ namespace Debugger
 
 
 
-        public class LogShower
+        internal class LogShower
         {
             public ImageIdentity bg;
             public TextIdentity text;
@@ -411,7 +396,7 @@ namespace Debugger
 
 
 
-        public static class LogShowerPool
+        internal static class LogShowerPool
         {
             public static Stack<LogShower> stack = new();
             public static int createIndex;

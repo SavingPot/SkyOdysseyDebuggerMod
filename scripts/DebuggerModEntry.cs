@@ -49,6 +49,9 @@ namespace Debugger
                 if (scene.name == SceneNames.GameScene)
                 {
                     GameSceneDebugger.Init();
+
+                    //强行停止记录
+                    if (GameSceneDebugger.isRecordingStructure) GameSceneDebugger.StopRecordingStructure();
                 }
                 else
                 {

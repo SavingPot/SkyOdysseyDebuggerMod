@@ -142,8 +142,14 @@ namespace Debugger
 
 
 
+        [FastButton("给予100金币")]
+        static void GiveCoins100()
+        {
+            Player.local.ServerAddCoin(100);
+        }
+
         [FastButton("生成结构体")]
-        public static void GenerateStructure()
+        static void GenerateStructure()
         {
             var structure = ModFactory.CompareStructure(StructureID.GhostShip);
 
@@ -151,7 +157,7 @@ namespace Debugger
         }
 
         [FastButton("在记录锚点处生成结构体")]
-        public static void GenerateStructureAtRecordAnchor()
+        static void GenerateStructureAtRecordAnchor()
         {
             if (recordAnchorPos.x == int.MaxValue && recordAnchorPos.y == int.MaxValue)
             {
@@ -165,15 +171,15 @@ namespace Debugger
         }
 
         [FastButton("开始或结束 记录结构体", "Click to say hello to the console")]
-        public static void RecordStructure()
+        static void RecordStructure()
         {
             if (isRecordingStructure)
-                EndRecordingStructure();
+                StopRecordingStructure();
             else
-                BeginRecordingStructure();
+                StartRecordingStructure();
         }
 
-        public static void BeginRecordingStructure()
+        public static void StartRecordingStructure()
         {
             isRecordingStructure = true;
             recordAnchorPos = new(int.MaxValue, int.MaxValue);
@@ -232,7 +238,7 @@ namespace Debugger
             recordedBlocks.Add(new(offset, isBackground, null));
         }
 
-        public static void EndRecordingStructure()
+        public static void StopRecordingStructure()
         {
             isRecordingStructure = false;
 
@@ -248,7 +254,7 @@ namespace Debugger
                 structure.fixedBlocks[i] = new(block.id, block.offset, block.isBackground);
             }
 
-            Debug.Log(structure.ToJObject().ToString());
+            Debug.Log(structure.ToJObject().ToString(Newtonsoft.Json.Formatting.None));
             Debug.Log("结束记录结构体");
         }
     }

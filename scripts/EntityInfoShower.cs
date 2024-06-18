@@ -32,7 +32,7 @@ namespace Debugger
             entity.OnHealthChange += () => text.RefreshUI();
         });
 
-        public static Canvas GetEntityCanvasFromEntity(Entity entity)
+        static Canvas GetEntityCanvasFromEntity(Entity entity)
         {
             Canvas canvas = null;
 
@@ -48,10 +48,10 @@ namespace Debugger
             return canvas;
         }
 
-        public static Canvas AddEntityCanvasTo(Entity entity) => EntityCanvasPool.Get(entity);
+        static Canvas AddEntityCanvasTo(Entity entity) => EntityCanvasPool.Get(entity);
 
 
-        public static Canvas GetOrAddEntityCanvasFrom(Entity entity)
+        static Canvas GetOrAddEntityCanvasFrom(Entity entity)
         {
             Canvas canvas = GetEntityCanvasFromEntity(entity);
 

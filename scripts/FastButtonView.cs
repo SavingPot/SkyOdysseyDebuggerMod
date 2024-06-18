@@ -37,8 +37,8 @@ namespace Debugger
 
     public static class FastButtonView
     {
-        public static ScrollViewIdentity fastButtonScrollView;
         public static readonly List<FastButton> fastButtons = new();
+        static ScrollViewIdentity fastButtonScrollView;
 
 
 
@@ -62,9 +62,9 @@ namespace Debugger
         {
             /* --------------------------------- 初始化快速按钮列表 -------------------------------- */
             fastButtonScrollView = GameUI.AddScrollView(UIA.UpperLeft, "debugger:scrollview_button_show", LogView.logPanel);
-            fastButtonScrollView.SetSizeDelta(LogView.logPanel.sd.x, LogView.logPanel.sd.y);
+            fastButtonScrollView.SetSizeDelta(210, LogView.logPanel.sd.y);
             fastButtonScrollView.SetAPos(fastButtonScrollView.sd.x / 2 + LogView.logScrollView.sd.x, -fastButtonScrollView.sd.y / 2 - LogView.detailedLogBackground.sd.y);
-            fastButtonScrollView.gridLayoutGroup.cellSize = new Vector2(fastButtonScrollView.gridLayoutGroup.cellSize.x, 45);
+            fastButtonScrollView.gridLayoutGroup.cellSize = new Vector2(200, 35);
             fastButtonScrollView.gridLayoutGroup.spacing = new Vector2(0, 2.5f);
             fastButtonScrollView.viewportImage.color = new Color32(0, 0, 0, 1);
             fastButtonScrollView.scrollViewImage.color = new Color32(0, 0, 0, 0);
