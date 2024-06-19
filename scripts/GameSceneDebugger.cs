@@ -148,6 +148,12 @@ namespace Debugger
             Player.local.ServerAddCoin(100);
         }
 
+        [FastButton("给予梯子")]
+        static void GiveLadders()
+        {
+            Player.local.ServerAddItem(ModFactory.CompareItem(BlockID.Ladder).DataToItem().SetCount(32));
+        }
+
         [FastButton("生成结构体")]
         static void GenerateStructure()
         {
