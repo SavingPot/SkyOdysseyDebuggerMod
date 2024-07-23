@@ -1,2 +1,2 @@
-scripts/bin/
-scripts/obj/
+scripts/bin/*
+scripts/obj/*

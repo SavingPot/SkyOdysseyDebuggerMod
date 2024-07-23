@@ -232,8 +232,9 @@ namespace Debugger
             //删除队列中的对应位置的方块
             for (int i = 0; i < recordedBlocks.Count; i++)
             {
+                //检查 id 是否为空是为了防止先前的空方块被错误地删除
                 var block = recordedBlocks[i];
-                if (block.offset == offset && block.isBackground == isBackground)
+                if (block.offset == offset && block.isBackground == isBackground && !block.id.IsNullOrEmpty())
                 {
                     recordedBlocks.RemoveAt(i);
                     return;
