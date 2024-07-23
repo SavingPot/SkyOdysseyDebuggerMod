@@ -106,7 +106,7 @@ namespace Debugger
                     return;
                 }
 
-                FastButtonView.fastButtons.Add(new FastButton(ReflectionTools.MethodWrapperAction(null, method), attribute.name, attribute.tooltip));
+                FastButtonView.fastButtons.Add(new FastButton(ReflectionTools.ExpressStaticAction(method), attribute.name, attribute.tooltip));
             });
 
             //刷新快捷按钮

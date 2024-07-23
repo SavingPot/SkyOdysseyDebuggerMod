@@ -10,11 +10,11 @@
         "projectUniqueName": "d:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj",
         "projectName": "scripts",
         "projectPath": "d:\\MakeGames\\ModProject\\Debugger\\scripts\\scripts.csproj",
-        "packagesPath": "C:\\Users\\SavingPotStudio\\.nuget\\packages\\",
+        "packagesPath": "C:\\Users\\admin\\.nuget\\packages\\",
         "outputPath": "d:\\MakeGames\\ModProject\\Debugger\\scripts\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\SavingPotStudio\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\admin\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net4.7.1"

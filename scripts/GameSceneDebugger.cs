@@ -157,7 +157,7 @@ namespace Debugger
         [FastButton("生成结构体")]
         static void GenerateStructure()
         {
-            var structure = ModFactory.CompareStructure(StructureID.GhostShip);
+            var structure = ModFactory.CompareStructure(StructureID.UndergroundRelics);
 
             Map.instance.GenerateStructure(structure, PosConvert.WorldToMapPos(Player.local.transform.position));
         }
@@ -171,7 +171,7 @@ namespace Debugger
                 return;
             }
 
-            var structure = ModFactory.CompareStructure(StructureID.GhostShip);
+            var structure = ModFactory.CompareStructure(StructureID.UndergroundRelics);
 
             Map.instance.GenerateStructure(structure, recordAnchorPos);
         }
