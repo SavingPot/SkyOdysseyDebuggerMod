@@ -1,11 +1,11 @@
+using GameCore.UI;
+using GameCore;
+using SP.Tools.Unity;
 using System.Collections.Generic;
 using System.Text;
-using GameCore;
-using GameCore.UI;
-using SP.Tools.Unity;
 using TMPro;
-using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine;
 
 namespace Debugger
 {
@@ -15,7 +15,8 @@ namespace Debugger
         internal static PanelIdentity logPanel;
         internal static ScrollViewIdentity logScrollView;
         internal static ImageIdentity detailedLogBackground;
-        private static TextIdentity detailedLogText;
+        private static LinkText detailedLogText;
+        private static InputFieldIdentity detailedLogTextContent;
         private static PanelIdentity logToolsPanel;
         private static ButtonIdentity clearLogsButton;
         private static ToggleIdentity mostDownLogsToggle;
@@ -73,8 +74,8 @@ namespace Debugger
         }
         public const int logToolsHeight = 30;
         public const int logPreviewHeight = 25;
-        public static readonly Vector2 logWindowSize = new(400, 400);
-        public static readonly Vector2 detailedLogSize = new(800, 180);
+        public static readonly Vector2 logWindowSize = new(500, 400);
+        public static readonly Vector2 detailedLogSize = new(500, 200);
 
 
 
@@ -182,7 +183,7 @@ namespace Debugger
             logScrollView = GameUI.AddScrollView(UIA.UpperLeft, "debugger:scrollview_log_show", logPanel);
             logScrollView.SetSizeDelta(logPanel.sd.x, logPanel.sd.y - logToolsHeight);
             logScrollView.SetAPos(logScrollView.sd.x / 2, -logScrollView.sd.y / 2 - logToolsHeight);
-            logScrollView.gridLayoutGroup.cellSize = new Vector2(logScrollView.gridLayoutGroup.cellSize.x, 35);
+            logScrollView.gridLayoutGroup.cellSize = new Vector2(logPanel.sd.x - logScrollView.scrollRect.verticalScrollbar.handleRect.sizeDelta.x / 2, 35);
             logScrollView.gridLayoutGroup.spacing = new Vector2(0, 2.5f);
             logScrollView.viewportImage.color = new Color32(0, 0, 0, 1);
             logScrollView.scrollViewImage.color = new Color32(0, 0, 0, 0);
@@ -222,11 +223,11 @@ namespace Debugger
 
 
             /* ---------------------------------- 详细日志 ---------------------------------- */
-            detailedLogBackground = GameUI.AddImage(UIA.UpperRight, "debugger:image.log_detailed_background", "ori:square_button_flat", logPanel);
+            detailedLogBackground = GameUI.AddImage(UIA.UpperLeft, "debugger:image.log_detailed_background", "ori:square_button_flat", logPanel);
             detailedLogBackground.image.SetColor(0.7f, 0.7f, 0.7f, 0.45f);
             detailedLogBackground.image.raycastTarget = false;
             detailedLogBackground.sd = detailedLogSize;
-            detailedLogBackground.SetAPos(detailedLogSize.x / 2, -detailedLogSize.y / 2);
+            detailedLogBackground.SetAPos(logPanel.ap.x, logPanel.ap.y - logPanel.sd.y / 2 - detailedLogSize.y / 2);
             detailedLogBackground.gameObject.AddComponent<RectMask2D>(); //防止字体超出背景
 
             //文本滚动条
@@ -237,16 +238,22 @@ namespace Debugger
             slider.SetAPosX(slider.sd.y / 2);
             slider.slider.onValueChanged.AddListener(SetDetailedLogTextPosition);
 
-            detailedLogText = GameUI.AddText(UIA.Up, "debugger:text.log_detailed", detailedLogBackground);
-            detailedLogText.text.SetFontSize(11);
-            detailedLogText.text.alignment = TextAlignmentOptions.TopLeft;
-            detailedLogText.text.overflowMode = TextOverflowModes.Page;
-            detailedLogText.text.margin = new Vector4(30, 10, 10, 0);
-            detailedLogText.text.raycastTarget = false;
-            detailedLogText.autoCompareText = false;
-            detailedLogText.SetSizeDelta(detailedLogSize.x, detailedLogSize.y * 10);
-            detailedLogText.text.color = new(1, 1, 1, 0.8f);
+            detailedLogTextContent = GameUI.AddInputField(UIA.Up, "debugger:text.log_detailed", detailedLogBackground);
+            detailedLogTextContent.field.textComponent.SetFontSize(11);
+            detailedLogTextContent.field.textComponent.alignment = TextAlignmentOptions.TopLeft;
+            detailedLogTextContent.field.textComponent.overflowMode = TextOverflowModes.Page;
+            detailedLogTextContent.field.textComponent.margin = new Vector4(10, 10, 10, 0);
+            detailedLogTextContent.field.textComponent.color = new(1, 1, 1, 0.8f);
+            detailedLogTextContent.field.lineType = TMP_InputField.LineType.MultiLineSubmit;
+            detailedLogTextContent.field.readOnly = true;
+            detailedLogTextContent.autoCompareText = false;
+            detailedLogTextContent.SetAPosX(slider.fillImage.rectTransform.sizeDelta.x);
+            detailedLogTextContent.SetSizeDelta(detailedLogSize.x - slider.fillImage.rectTransform.sizeDelta.x, detailedLogSize.y * 10);
+            Component.Destroy(detailedLogTextContent.image); //删除背景图
+            detailedLogText = detailedLogTextContent.gameObject.AddComponent<LinkText>();
+            detailedLogText.content = detailedLogTextContent.field.textComponent;
             SetDetailedLogTextPosition(0);
+            //TODO: code --goto "D:\MakeGames\GameProject\ori\scripts\Entities\FishingFloat.cs":10
 
 
 
@@ -270,6 +277,10 @@ namespace Debugger
                 }
 
                 logShowers.Clear();
+
+                //清除其他文本
+                detailedLogTextContent.field.text = string.Empty;
+                logPreviewText.text.text = string.Empty;
             });
 
 
@@ -331,7 +342,7 @@ namespace Debugger
 
             /* --------------------------------- 锁定最下开关 --------------------------------- */
             mostDownLogsToggle = GameUI.AddToggle(UIA.Left, "debugger:toggle.most_down_logs", logToolsPanel);
-            mostDownLogsToggle.SetScale(new Vector2(90, logToolsHeight));
+            mostDownLogsToggle.SetToggleSize(new Vector2(90, logToolsHeight));
             mostDownLogsToggle.text.text.SetFontSize(14);
             mostDownLogsToggle.SetAPosOnBySizeRight(clearLogsButton, 5);
             mostDownLogsToggle.text.text.alignment = TMPro.TextAlignmentOptions.Center;
@@ -346,7 +357,7 @@ namespace Debugger
 
             /* --------------------------------- 锁定 UI 开关 ---------- */
             activateUIToggle = GameUI.AddToggle(UIA.Left, "debugger:toggle.activate_ui", logToolsPanel);
-            activateUIToggle.SetScale(new Vector2(90, logToolsHeight));
+            activateUIToggle.SetToggleSize(new Vector2(90, logToolsHeight));
             activateUIToggle.canvasGroup.ignoreParentGroups = true;
             activateUIToggle.SetAPosOnBySizeRight(mostDownLogsToggle, 5);
             activateUIToggle.text.text.SetFontSize(14);
@@ -365,7 +376,7 @@ namespace Debugger
 
         static void SetDetailedLogTextPosition(float value)
         {
-            detailedLogText.SetAPosY(-detailedLogText.sd.y / 2 + detailedLogText.sd.y * value);
+            detailedLogTextContent.SetAPosY(-detailedLogTextContent.sd.y / 2 + detailedLogTextContent.sd.y * value);
         }
 
 
@@ -444,8 +455,8 @@ namespace Debugger
                         //将详细日志文本的内容刷新
                         if (detailedLogText)
                         {
-                            detailedLogText.text.text = text.text.text;
-                            detailedLogText.text.pageToDisplay = 1;
+                            detailedLogTextContent.field.text = text.text.text;
+                            detailedLogTextContent.field.textComponent.pageToDisplay = 1;
                         }
 
                         //恢复详细日志文本的位置

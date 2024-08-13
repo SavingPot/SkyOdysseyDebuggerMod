@@ -29,6 +29,7 @@ namespace Debugger
             //初始化调试器 UI
             LogView.Init();
             FastButtonView.Init();
+            Center.SetCanvasesState(true);
 
             //将日志代理到 Debugger
             Application.logMessageReceivedThreaded += LogView.OnHandleLog;
@@ -56,17 +57,16 @@ namespace Debugger
                 else
                 {
                     GameSceneDebugger.Destroy();
-                    EntityInfoShower.EntityCanvasPool.stack.Clear();
                 }
 
-                Center.SetUIsToFirst();
+                Center.SetCanvasesState(true);
+                Center.SetCanvasesToFirst();
             };
 
             MethodAgent.updates += GameSceneDebugger.Update;
             MethodAgent.updates += LogView.CheckSelectedObject;
-            MethodAgent.updates += Center.DebuggerCanvasActiveControl;
+            MethodAgent.updates += Center.CanvasesActiveControl;
             EntityCenter.OnAddEntity += EntityInfoShower.ShowEntityInfo;
-            EntityCenter.OnRemoveEntity += EntityInfoShower.RecoverEntityCanvasFrom;
             GFiles.settings.uiSpeed = 100;
 
 

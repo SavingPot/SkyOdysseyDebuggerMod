@@ -45,6 +45,14 @@
                 "text": "设置"
             },
             {
+                "id": "debugger:ib.give_item.inputField",
+                "text": "输入物品 ID..."
+            },
+            {
+                "id": "debugger:ib.give_item.button.text",
+                "text": "给予"
+            },
+            {
                 "id": "debugger:toggle.activate_ui.text",
                 "text": "启用 UI"
             }

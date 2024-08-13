@@ -60,24 +60,35 @@ namespace Debugger
 
 
 
-        public static void DebuggerCanvasActiveControl()
+        public static void CanvasesActiveControl()
         {
             if (Keyboard.current != null && Keyboard.current.rightShiftKey.isPressed && Keyboard.current.mKey.wasPressedThisFrame)
             {
-                //bool newState = !GetDebuggerCanvas().gameObject.activeSelf;
-                //GetDebuggerCanvas().gameObject.SetActive(newState);
-
-                bool newState = !GetMainCanvas().enabled;
-                GetMainCanvas().enabled = newState;
-                GetFrequentSimpleCanvas().enabled = newState;
-
-                //避免在非游戏场景生成 Blockmap
-                //if (Blockmap.HasInstance())
-                //    chunk.SetAll(newState);
+                ChangeCanvasesState();
             }
         }
 
-        public static void SetUIsToFirst()
+        public static void ChangeCanvasesState() => SetCanvasesState(!GetMainCanvas().enabled);
+
+        public static void SetCanvasesState(bool enabled)
+        {
+            GetMainCanvas().enabled = enabled;
+            GetFrequentSimpleCanvas().enabled = enabled;
+
+            // 调整摄像机的Viewport Rect
+            if (enabled)
+            {
+                var screenOffsetX = LogView.logPanel.sd.x / GameUI.canvasScaler.referenceResolution.x;
+                var screenOffsetY = LogView.logPreviewHeight / GameUI.canvasScaler.referenceResolution.y;
+                Tools.instance.mainCamera.rect = new Rect(screenOffsetX, screenOffsetY, 1 - screenOffsetX, 1 - screenOffsetY);
+            }
+            else
+            {
+                Tools.instance.mainCamera.rect = new Rect(0, 0, 1, 1);
+            }
+        }
+
+        public static void SetCanvasesToFirst()
         {
             GetMainCanvas().transform.SetAsFirstSibling();
             GetFrequentSimpleCanvas().transform.SetAsFirstSibling();

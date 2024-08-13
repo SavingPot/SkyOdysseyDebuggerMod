@@ -26,6 +26,7 @@ namespace Debugger
 
         public static InputButtonIdentity randomUpdateIB;
         public static InputButtonIdentity time24IB;
+        public static InputButtonIdentity giveItemIB;
         public static TextIdentity gameStatusText;
         private static readonly StringBuilder gameStatusSB = new();
         public static bool isRecordingStructure;
@@ -41,7 +42,7 @@ namespace Debugger
             /* ---------------------------------- 随机更新频率设置框 ---------- */
             randomUpdateIB = GameUI.AddInputButton(UIA.Middle, "debugger:ib.random_update", logPanel);
             randomUpdateIB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
-            randomUpdateIB.SetAPos(0, -logPanel.sd.y / 2 - inputButtonsHeight / 2);
+            randomUpdateIB.SetAPos(0, -logPanel.sd.y / 2 - inputButtonsHeight * 0.5f);
             randomUpdateIB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
             randomUpdateIB.OnClickBind(() =>
             {
@@ -62,7 +63,7 @@ namespace Debugger
             /* ---------------------------------- 时间设置框 --------------------------------- */
             time24IB = GameUI.AddInputButton(UIA.Middle, "debugger:ib.time24", logPanel);
             time24IB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
-            time24IB.SetAPos(0, -logPanel.sd.y / 2 - (inputButtonsHeight * 0.5f) * 3);
+            time24IB.SetAPos(0, -logPanel.sd.y / 2 - inputButtonsHeight * 1.5f);
             time24IB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
             time24IB.OnClickBind(() =>
             {
@@ -70,6 +71,28 @@ namespace Debugger
                 {
                     GTime.time24Format = time24IB.field.field.text.ToInt();
                 }
+            });
+
+
+
+            /* ---------------------------------- 给予物品 ---------------------------------- */
+            giveItemIB = GameUI.AddInputButton(UIA.Middle, "debugger:ib.give_item", logPanel);
+            giveItemIB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
+            giveItemIB.SetAPos(0, -logPanel.sd.y / 2 - inputButtonsHeight * 2.5f);
+            giveItemIB.OnClickBind(() =>
+            {
+                if (!Player.TryGetLocal(out Player player))
+                    return;
+
+                var itemId = giveItemIB.field.field.text;
+                var item = ModFactory.CompareItem(itemId);
+                if (item == null)
+                {
+                    Debug.LogWarning($"不存在的物品: {itemId}");
+                    return;
+                }
+
+                player.ServerAddItem(item.DataToItem());
             });
 
 
@@ -136,6 +159,7 @@ namespace Debugger
         {
             GameObject.Destroy(randomUpdateIB.gameObject);
             GameObject.Destroy(time24IB.gameObject);
+            GameObject.Destroy(giveItemIB.gameObject);
             GameObject.Destroy(gameStatusText.gameObject);
         }
 
@@ -146,6 +170,12 @@ namespace Debugger
         static void GiveCoins100()
         {
             Player.local.ServerAddCoin(100);
+        }
+
+        [FastButton("随机更换天气")]
+        static void ChangeWeatherRandomly()
+        {
+            RandomUpdater.ChangeWeatherRandomly();
         }
 
         [FastButton("给予梯子")]
