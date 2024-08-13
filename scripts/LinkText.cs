@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.IO;
 using GameCore.UI;
 using SP.Tools;
 using TMPro;
@@ -18,12 +19,17 @@ namespace Debugger
             var linkIndex = TMP_TextUtilities.FindIntersectingLink(content, eventData.position, null);
             if (linkIndex != -1)
             {
-                //构建命令行参数
-                string codePath = "D:\\Apps\\Microsoft VS Code\\Code.exe";
-                var linkInfo = content.textInfo.linkInfo[linkIndex];
-                var commandLineArgs = $"--goto \"{linkInfo.GetLinkText()}\"";
+                //检查 VSCode 是否安装
+                string codePath = "D:\\Apps\\Microsoft VS Code\\Code.exe"; //TODO
+                if (!File.Exists(codePath))
+                {
+                    Debug.LogError("VS Code not found!");
+                    return;
+                }
 
                 //启动 VSCode
+                var linkInfo = content.textInfo.linkInfo[linkIndex];
+                var commandLineArgs = $"--goto \"{linkInfo.GetLinkText()}\"";
                 Process.Start(new ProcessStartInfo(codePath, commandLineArgs));
             }
         }
