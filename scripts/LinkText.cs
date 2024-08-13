@@ -18,12 +18,12 @@ namespace Debugger
             var linkIndex = TMP_TextUtilities.FindIntersectingLink(content, eventData.position, null);
             if (linkIndex != -1)
             {
-                // 构建命令行参数
+                //构建命令行参数
                 string codePath = "D:\\Apps\\Microsoft VS Code\\Code.exe";
                 var linkInfo = content.textInfo.linkInfo[linkIndex];
                 var commandLineArgs = $"--goto \"{linkInfo.GetLinkText()}\"";
 
-                // 启动VS Code
+                //启动 VSCode
                 Process.Start(new ProcessStartInfo(codePath, commandLineArgs));
             }
         }
