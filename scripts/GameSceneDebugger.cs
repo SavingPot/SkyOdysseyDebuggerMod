@@ -40,9 +40,9 @@ namespace Debugger
             var logPanel = LogView.logPanel;
 
             /* ---------------------------------- 随机更新频率设置框 ---------- */
-            randomUpdateIB = GameUI.AddInputButton(UIA.Middle, "debugger:ib.random_update", logPanel);
-            randomUpdateIB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
-            randomUpdateIB.SetAPos(0, -logPanel.sd.y / 2 - inputButtonsHeight * 0.5f);
+            randomUpdateIB = GameUI.AddInputButton(UIA.UpperRight, "debugger:ib.random_update", Center.GetMainCanvas().transform);
+            randomUpdateIB.SetSize(new Vector2(FastButtonView.fastButtonScrollView.sd.x, inputButtonsHeight));
+            randomUpdateIB.SetAPos(FastButtonView.fastButtonScrollView.ap.x, FastButtonView.fastButtonScrollView.ap.y - FastButtonView.fastButtonScrollView.sd.y / 2 - inputButtonsHeight * 0.5f);
             randomUpdateIB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
             randomUpdateIB.OnClickBind(() =>
             {
@@ -61,9 +61,9 @@ namespace Debugger
 
 
             /* ---------------------------------- 时间设置框 --------------------------------- */
-            time24IB = GameUI.AddInputButton(UIA.Middle, "debugger:ib.time24", logPanel);
-            time24IB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
-            time24IB.SetAPos(0, -logPanel.sd.y / 2 - inputButtonsHeight * 1.5f);
+            time24IB = GameUI.AddInputButton(UIA.UpperRight, "debugger:ib.time24", Center.GetMainCanvas().transform);
+            time24IB.SetSize(randomUpdateIB.sd);
+            time24IB.SetAPos(randomUpdateIB.ap.x, randomUpdateIB.ap.y - inputButtonsHeight * 1);
             time24IB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
             time24IB.OnClickBind(() =>
             {
@@ -76,9 +76,9 @@ namespace Debugger
 
 
             /* ---------------------------------- 给予物品 ---------------------------------- */
-            giveItemIB = GameUI.AddInputButton(UIA.Middle, "debugger:ib.give_item", logPanel);
-            giveItemIB.SetSize(new Vector2(logPanel.sd.x, inputButtonsHeight));
-            giveItemIB.SetAPos(0, -logPanel.sd.y / 2 - inputButtonsHeight * 2.5f);
+            giveItemIB = GameUI.AddInputButton(UIA.UpperRight, "debugger:ib.give_item", Center.GetMainCanvas().transform);
+            giveItemIB.SetSize(randomUpdateIB.sd);
+            giveItemIB.SetAPos(randomUpdateIB.ap.x, randomUpdateIB.ap.y - inputButtonsHeight * 2);
             giveItemIB.OnClickBind(() =>
             {
                 if (!Player.TryGetLocal(out Player player))
@@ -101,7 +101,7 @@ namespace Debugger
             gameStatusText = GameUI.AddText(UIA.UpperLeft, "debugger:text.game_status", Center.GetFrequentSimpleCanvas().transform);
             gameStatusText.text.SetFontSize(12);
             gameStatusText.SetSizeDelta(600, logPanel.sd.y);
-            gameStatusText.SetAPos(logPanel.ap.x + (gameStatusText.sd.x / 2) + (logPanel.sd.x / 2) + 10, -LogView.detailedLogSize.y - gameStatusText.sd.y / 2 - 10);
+            gameStatusText.SetAPos(logPanel.ap.x + (gameStatusText.sd.x / 2) + (logPanel.sd.x / 2) + 10, -gameStatusText.sd.y / 2 - 10);
             gameStatusText.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
             gameStatusText.text.raycastTarget = false;
             gameStatusText.AfterRefreshing += t =>

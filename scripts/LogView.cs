@@ -74,8 +74,8 @@ namespace Debugger
         }
         public const int logToolsHeight = 30;
         public const int logPreviewHeight = 25;
-        public static readonly Vector2 logWindowSize = new(500, 400);
-        public static readonly Vector2 detailedLogSize = new(500, 200);
+        public static readonly Vector2 logWindowSize = new(400, 400);
+        public static readonly Vector2 detailedLogSize = new(400, 200);
 
 
 
