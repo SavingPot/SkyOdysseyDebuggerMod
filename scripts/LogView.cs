@@ -166,9 +166,8 @@ namespace Debugger
         internal static void Init()
         {
             /* ---------------------------------- 日志面板 ---------------------------------- */
-            logPanel = GameUI.AddPanel("debugger:panel.log_show", Center.GetMainCanvas().transform);
-            logPanel.SetAnchorMinMax(0, 1);
-            logPanel.sd = logWindowSize;
+            logPanel = GameUI.AddPanel("debugger:panel.log_view", Center.GetMainCanvas().transform);
+            logPanel.SetAnchorMinMax(0, 0.3f, 0.23f, 1);
             logPanel.panelImage.SetColor(0.7f, 0.7f, 0.7f, 0.45f);
 
             //设置日志面板位置
@@ -181,9 +180,10 @@ namespace Debugger
 
             /* ---------------------------------- 日志列表 ---------------------------------- */
             logScrollView = GameUI.AddScrollView(UIA.UpperLeft, "debugger:scrollview_log_show", logPanel);
-            logScrollView.SetSizeDelta(logPanel.sd.x, logPanel.sd.y - logToolsHeight);
-            logScrollView.SetAPos(logScrollView.sd.x / 2, -logScrollView.sd.y / 2 - logToolsHeight);
-            logScrollView.gridLayoutGroup.cellSize = new Vector2(logPanel.sd.x - logScrollView.scrollRect.verticalScrollbar.handleRect.sizeDelta.x / 2, 35);
+            logScrollView.SetAnchorMinMax(0, 0, 1, 0.94f);
+            logScrollView.sd = Vector2.zero;
+            logScrollView.ap = Vector2.zero;
+            logScrollView.gridLayoutGroup.cellSize = new Vector2(logPanel.rt.anchorMax.x * GameUI.canvasScaler.referenceResolution.x, 35);
             logScrollView.gridLayoutGroup.spacing = new Vector2(0, 2.5f);
             logScrollView.viewportImage.color = new Color32(0, 0, 0, 1);
             logScrollView.scrollViewImage.color = new Color32(0, 0, 0, 0);
@@ -194,9 +194,7 @@ namespace Debugger
             /* --------------------------------- 日志工具面板 --------------------------------- */
             logToolsPanel = GameUI.AddPanel("debugger:panel.log_tools", logPanel);
             logToolsPanel.panelImage.SetColor(0.75f, 0.75f, 0.75f, 0.75f);
-            logToolsPanel.SetAPos(logPanel.sd.x / 2, -logToolsHeight / 2);
-            logToolsPanel.SetSizeDelta(logWindowSize.x, logToolsHeight);
-            logToolsPanel.SetAnchorMinMax(0, 1);
+            logToolsPanel.SetAnchorMinMax(0, 0.94f, 1, 1);
 
 
 
@@ -223,12 +221,13 @@ namespace Debugger
 
 
             /* ---------------------------------- 详细日志 ---------------------------------- */
-            detailedLogBackground = GameUI.AddImage(UIA.UpperLeft, "debugger:image.log_detailed_background", "ori:square_button_flat", logPanel);
+            detailedLogBackground = GameUI.AddImage(UIA.UpperLeft, "debugger:image.log_detailed_background", "ori:square_button_flat", Center.GetMainCanvas().transform);
+            detailedLogBackground.SetAnchorMinMax(0, 0f, 0.23f, 0.3f);
             detailedLogBackground.image.SetColor(0.7f, 0.7f, 0.7f, 0.45f);
             detailedLogBackground.image.raycastTarget = false;
-            detailedLogBackground.sd = detailedLogSize;
-            detailedLogBackground.SetAPos(logPanel.ap.x, logPanel.ap.y - logPanel.sd.y / 2 - detailedLogSize.y / 2);
             detailedLogBackground.gameObject.AddComponent<RectMask2D>(); //防止字体超出背景
+            detailedLogBackground.sd = Vector2.zero;
+            detailedLogBackground.ap = Vector2.zero;
 
             //文本滚动条
             var slider = GameUI.AddSlider(UIA.Left, "debugger:slider.log_detailed", detailedLogBackground);
@@ -370,7 +369,6 @@ namespace Debugger
 
         static void SetLogPanelTransform()
         {
-            logPanel.SetAPos(logPanel.sd.x / 2, -logPanel.sd.y / 2);
             logPanel.rt.localScale = Vector3.one;
         }
 

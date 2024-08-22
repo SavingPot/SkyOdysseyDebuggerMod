@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 using GameCore;
@@ -38,11 +39,13 @@ namespace Debugger
         public static void Init()
         {
             var logPanel = LogView.logPanel;
+            var randomUpdateAnchor = new Vector2((FastButtonView.viewAnchorMax.x + FastButtonView.viewAnchorMin.x) / 2, FastButtonView.viewAnchorMin.y);
 
             /* ---------------------------------- 随机更新频率设置框 ---------- */
             randomUpdateIB = GameUI.AddInputButton(UIA.UpperRight, "debugger:ib.random_update", Center.GetMainCanvas().transform);
-            randomUpdateIB.SetSize(new Vector2(FastButtonView.fastButtonScrollView.sd.x, inputButtonsHeight));
-            randomUpdateIB.SetAPos(FastButtonView.fastButtonScrollView.ap.x, FastButtonView.fastButtonScrollView.ap.y - FastButtonView.fastButtonScrollView.sd.y / 2 - inputButtonsHeight * 0.5f);
+            randomUpdateIB.SetAnchorMinMax(randomUpdateAnchor, randomUpdateAnchor);
+            randomUpdateIB.SetSize(new Vector2((FastButtonView.viewAnchorMax.x - FastButtonView.viewAnchorMin.x) * GameUI.canvasScaler.referenceResolution.x, inputButtonsHeight));
+            randomUpdateIB.SetAPos(0, -inputButtonsHeight * 0.5f);
             randomUpdateIB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
             randomUpdateIB.OnClickBind(() =>
             {
@@ -62,6 +65,7 @@ namespace Debugger
 
             /* ---------------------------------- 时间设置框 --------------------------------- */
             time24IB = GameUI.AddInputButton(UIA.UpperRight, "debugger:ib.time24", Center.GetMainCanvas().transform);
+            time24IB.SetAnchorMinMax(randomUpdateIB.rt.anchorMin, randomUpdateIB.rt.anchorMax);
             time24IB.SetSize(randomUpdateIB.sd);
             time24IB.SetAPos(randomUpdateIB.ap.x, randomUpdateIB.ap.y - inputButtonsHeight * 1);
             time24IB.field.field.contentType = TMPro.TMP_InputField.ContentType.IntegerNumber;
@@ -77,6 +81,7 @@ namespace Debugger
 
             /* ---------------------------------- 给予物品 ---------------------------------- */
             giveItemIB = GameUI.AddInputButton(UIA.UpperRight, "debugger:ib.give_item", Center.GetMainCanvas().transform);
+            giveItemIB.SetAnchorMinMax(randomUpdateIB.rt.anchorMin, randomUpdateIB.rt.anchorMax);
             giveItemIB.SetSize(randomUpdateIB.sd);
             giveItemIB.SetAPos(randomUpdateIB.ap.x, randomUpdateIB.ap.y - inputButtonsHeight * 2);
             giveItemIB.OnClickBind(() =>
@@ -100,8 +105,9 @@ namespace Debugger
             /* --------------------------------- 游戏状态显示 --------------------------------- */
             gameStatusText = GameUI.AddText(UIA.UpperLeft, "debugger:text.game_status", Center.GetFrequentSimpleCanvas().transform);
             gameStatusText.text.SetFontSize(12);
-            gameStatusText.SetSizeDelta(600, logPanel.sd.y);
-            gameStatusText.SetAPos(logPanel.ap.x + (gameStatusText.sd.x / 2) + (logPanel.sd.x / 2) + 10, -gameStatusText.sd.y / 2 - 10);
+            gameStatusText.SetAnchorMinMax(LogView.logPanel.rt.anchorMax, LogView.logPanel.rt.anchorMax);
+            gameStatusText.SetSizeDelta(600, 400);
+            gameStatusText.SetAPos(gameStatusText.sd.x / 2 + 10, -gameStatusText.sd.y / 2 - 10);
             gameStatusText.text.alignment = TMPro.TextAlignmentOptions.TopLeft;
             gameStatusText.text.raycastTarget = false;
             gameStatusText.AfterRefreshing += t =>
@@ -110,6 +116,7 @@ namespace Debugger
                 {
                     gameStatusSB.Clear();
 
+                    gameStatusSB.AppendLine(Tools.TimeInDayWithSquareBrackets());
                     gameStatusSB.AppendLine($"FPS: {(int)Tools.smoothFps}");
                     gameStatusSB.AppendLine($"日志显示器数量: {LogView.logShowers.Count}/{LogView.LogShowerPool.createIndex}");
 

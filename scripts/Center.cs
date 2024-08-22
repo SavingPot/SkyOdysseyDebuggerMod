@@ -78,8 +78,8 @@ namespace Debugger
             // 调整摄像机的Viewport Rect
             if (enabled)
             {
-                var screenOffsetLefter = FastButtonView.viewSize.x / GameUI.canvasScaler.referenceResolution.x;
-                var screenOffsetRighter = LogView.logPanel.sd.x / GameUI.canvasScaler.referenceResolution.x;
+                var screenOffsetLefter = 1 - FastButtonView.viewAnchorMin.x;
+                var screenOffsetRighter = LogView.logPanel.rt.anchorMax.x;
                 var screenOffsetUpper = LogView.logPreviewHeight / GameUI.canvasScaler.referenceResolution.y;
                 Tools.instance.mainCamera.rect = new Rect(screenOffsetRighter, screenOffsetUpper, 1 - screenOffsetRighter - screenOffsetLefter, 1 - screenOffsetUpper);
             }
